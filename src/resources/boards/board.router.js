@@ -1,0 +1,30 @@
+const router = require('express').Router();
+const Board = require('./board.model');
+const boardsService = require('./board.service');
+
+router.route('/').get(async (req, res) => {
+  const boards = await boardsService.getAll();
+  // map board fields to exclude secret fields like "password"
+  res.status(200).json(boards);
+});
+
+router.route('/:boardid').get(async (req, res) => {
+  const boardId = req.params.boardid;
+  const board = await boardsService.getBoard(boardId);
+  if (board) {
+    res.status(200).json(board);
+  } else {
+    res.sendStatus(404).json({message: 'Board not found'});
+  }
+});
+
+router.route('/').post(async (req, res) => {
+  const newBoard = await boardsService.addBoard(new Board(req.body));
+  if (newBoard) {
+    res.status(201).json(newBoard);
+  } else {
+    res.sendStatus(400).json({message: 'Board not created'});
+  }
+});
+
+module.exports = router;
