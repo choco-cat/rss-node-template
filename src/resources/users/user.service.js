@@ -6,4 +6,8 @@ const addUser = (userRow) => usersRepo.addUser(userRow);
 
 const getUser = (userId) => usersRepo.getUser(userId);
 
-module.exports = { getAll, addUser, getUser };
+const updateUser = (userRow) => usersRepo.updateUser(userRow);
+
+const deleteUser = (userId) => usersRepo.deleteUser(userId);
+
+module.exports = { getAll, addUser, getUser, updateUser, deleteUser };
