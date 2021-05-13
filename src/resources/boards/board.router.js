@@ -4,7 +4,6 @@ const boardsService = require('./board.service');
 
 router.route('/').get(async (req, res) => {
   const boards = await boardsService.getAll();
-  // map board fields to exclude secret fields like "password"
   res.status(200).json(boards);
 });
 

@@ -4,7 +4,6 @@ class Board {
   constructor({
     id = uuid(),
     title,
-                // eslint-disable-next-line no-unused-vars
     columns = []
   } = {}) {
     this.id = id;
