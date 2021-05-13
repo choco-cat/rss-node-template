@@ -32,7 +32,7 @@ router.route('/:userid').put(async (req, res) => {
   if (updateUser) {
     res.status(200).json(updateUser);
   } else {
-    res.sendStatus(400).json({message: 'User deleted'});
+    res.sendStatus(400).json({message: 'User updated'});
   }
 });
 

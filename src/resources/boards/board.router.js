@@ -27,4 +27,22 @@ router.route('/').post(async (req, res) => {
   }
 });
 
+router.route('/:boardid').put(async (req, res) => {
+  const updateBoard = await boardsService.updateBoard(new Board({ id: req.params.boardid, ...req.body }));
+  if (updateBoard) {
+    res.status(200).json(updateBoard);
+  } else {
+    res.sendStatus(400).json({message: 'Board updated'});
+  }
+});
+
+router.route('/:boardid').delete(async (req, res) => {
+  const deleteBoard = await boardsService.deleteBoard(req.params.boardid);
+  if (deleteBoard) {
+    res.status(204).json({message: 'Board deleted'});
+  } else {
+    res.sendStatus(404).json({message: 'Board not found'});
+  }
+});
+
 module.exports = router;

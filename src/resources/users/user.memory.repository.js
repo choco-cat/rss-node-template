@@ -27,8 +27,11 @@ const updateUser = async (userRow) => {
 }
 
 const deleteUser = async (userId) => {
-  const user = Users.find((el) =>  el.id === userId);
+  const user = Users.find((el) => el.id === userId);
   const index = Users.indexOf(user);
+  if (index > -1) {
+    Users.splice(index, 1);
+  }
   return index !== -1 ;
 }
 
