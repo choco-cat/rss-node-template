@@ -1,10 +1,4 @@
-const Boards = [
-  {
-    id: "d56rfg-j",
-    title: "board1",
-    columns: [{ id: "string", title: "string", order: 0 }]
-  }
-];
+const Boards = [];
 
 const getAll = async () => Boards;
 

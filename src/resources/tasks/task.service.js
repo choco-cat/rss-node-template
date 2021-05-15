@@ -10,4 +10,6 @@ const updateTask = (taskRow) => tasksRepo.updateTask(taskRow);
 
 const deleteTask = (taskId) => tasksRepo.deleteTask(taskId);
 
-module.exports = { getAll, addTask, getTask, updateTask, deleteTask };
+const deleteTasksFromUser = (userId) => tasksRepo.deleteTasksFromUser(userId);
+
+module.exports = { getAll, addTask, getTask, updateTask, deleteTask, deleteTasksFromUser };

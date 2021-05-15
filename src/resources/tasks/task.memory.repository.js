@@ -1,9 +1,6 @@
-const Tasks = [];
+let Tasks = [];
 
-const getAll = async (boardId) => {
-  console.log(Tasks, boardId);
-  return Tasks.filter((el) => el.boardId === boardId);
-}
+const getAll = async (boardId) => Tasks.filter((el) => el.boardId === boardId)
 
 const addTask = async (taskRow) => {
   Tasks.push(taskRow);
@@ -13,6 +10,11 @@ const addTask = async (taskRow) => {
 const getTask = async (boardId, taskId) => {
   const task = Tasks.find((el) =>  el.id === taskId && el.boardId === boardId);
   return task;
+}
+
+const deleteTasksFromUser = async (userId) => {
+  Tasks = Tasks.map((el) =>  el.userId === userId ? { ...el, userId: null } : el);
+  return Tasks;
 }
 
 const updateTask = async (taskRow) => {
@@ -36,5 +38,4 @@ const deleteTask = async (taskId) => {
   return index !== -1 ;
 }
 
-
-module.exports = { getAll, addTask, getTask, updateTask, deleteTask };
+module.exports = { getAll, addTask, getTask, updateTask, deleteTask, deleteTasksFromUser };
