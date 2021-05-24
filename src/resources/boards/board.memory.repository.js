@@ -1,7 +1,11 @@
 const Boards = [];
 
 const getAll = async () => Boards;
-
+/**
+ *
+ * @param boardRow
+ * @returns {Promise<*>}
+ */
 const addBoard = async (boardRow) => {
   Boards.push(boardRow);
   return boardRow;

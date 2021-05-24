@@ -10,7 +10,12 @@ const addTask = async (taskRow) => {
   Tasks.push(taskRow);
   return taskRow;
 }
-
+/**
+ *
+ * @param boardId
+ * @param taskId
+ * @returns {Promise<*>}
+ */
 const getTask = async (boardId, taskId) => {
   const task = Tasks.find((el) =>  el.id === taskId && el.boardId === boardId);
   return task;
