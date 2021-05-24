@@ -1,7 +1,11 @@
 let Tasks = [];
 
 const getAll = async (boardId) => Tasks.filter((el) => el.boardId === boardId)
-
+/**
+ * Adds taskRow to array Tasks, returns taskRow
+ * @param taskRow
+ * @returns {Promise<*>}
+ */
 const addTask = async (taskRow) => {
   Tasks.push(taskRow);
   return taskRow;
