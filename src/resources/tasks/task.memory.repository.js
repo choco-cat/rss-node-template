@@ -7,7 +7,7 @@ const getAll = async (boardId) => Tasks.filter((el) => el.boardId === boardId)
 /**
  * Adds a new task object to array of tasks objects, returns new task
  * @param {Task} taskRow task to add
- * @returns {Task} task object
+ * @returns {Task} task new object
  */
 const addTask = async (taskRow) => {
   Tasks.push(taskRow);
@@ -26,7 +26,7 @@ const getTask = async (boardId, taskId) => {
 /**
  * Deletes all user tasks
  * @param {string} userId user id
- * @returns {Array.<Task>} Returns an updated array of tasks objects
+ * @returns {Array.<Task>} An updated array of tasks objects
  */
 const deleteTasksFromUser = async (userId) => {
   Tasks = Tasks.map((el) =>  el.userId === userId ? { ...el, userId: null } : el);
