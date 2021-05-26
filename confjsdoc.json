@@ -3,7 +3,7 @@
     "recurseDepth": 10,
     "source": {
     "include": [ "src\\resources\\" ],
-    "exclude": [ "test", "out", "doc" ],
+    "exclude": [ "test", "out", "doc", "node_modules" ],
     "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },

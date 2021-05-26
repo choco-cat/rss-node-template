@@ -1,31 +1,42 @@
 let Tasks = [];
-
+/**
+ * Returns all tasks
+ * @returns {Array.<Task>} array of tasks objects
+ */
 const getAll = async (boardId) => Tasks.filter((el) => el.boardId === boardId)
 /**
- * Adds taskRow to array Tasks, returns taskRow
- * @param taskRow
- * @returns {Promise<*>}
+ * Adds a new task object to array of tasks objects, returns new task
+ * @param {Task} taskRow task to add
+ * @returns {Task} task object
  */
 const addTask = async (taskRow) => {
   Tasks.push(taskRow);
   return taskRow;
 }
 /**
- *
- * @param boardId
- * @param taskId
- * @returns {Promise<*>}
+ * Returns the task by its id
+ * @param {string} boardId id of board from which to select task
+ * @param {string} taskId task id
+ * @returns {Task} task object
  */
 const getTask = async (boardId, taskId) => {
   const task = Tasks.find((el) =>  el.id === taskId && el.boardId === boardId);
   return task;
 }
-
+/**
+ * Deletes all user tasks
+ * @param {string} userId user id
+ * @returns {Array.<Task>} Returns an updated array of tasks objects
+ */
 const deleteTasksFromUser = async (userId) => {
   Tasks = Tasks.map((el) =>  el.userId === userId ? { ...el, userId: null } : el);
   return Tasks;
 }
-
+/**
+ * Updates task data, returns updated task
+ * @param {Task} taskRow task to update
+ * @returns {Task}
+ */
 const updateTask = async (taskRow) => {
   const task = Tasks.find((el) =>  el.id === taskRow.id && el.boardId === taskRow.boardId);
   if (task !== undefined) {
@@ -37,7 +48,11 @@ const updateTask = async (taskRow) => {
   }
   return task;
 }
-
+/**
+ * Deletes the task
+ * @param {string} TaskId task id
+ * @returns {boolean} Returns true if the item has been removed and false if not removed
+ */
 const deleteTask = async (taskId) => {
   const task = Tasks.find((el) =>  el.id === taskId);
   const index = Tasks.indexOf(task);
