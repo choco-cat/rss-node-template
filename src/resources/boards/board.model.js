@@ -1,7 +1,8 @@
 const { v4: uuid } = require('uuid');
 /**
  * Board class
- * @constructor
+ *
+ * @class
  */
 class Board {
   constructor({

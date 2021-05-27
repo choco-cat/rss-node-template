@@ -1,7 +1,8 @@
 const { v4: uuid } = require('uuid');
 /**
  * Task class
- * @constructor
+ *
+ * @class
  */
 class Task {
   constructor({

@@ -1,7 +1,8 @@
 const { v4: uuid } = require('uuid');
 /**
  * User class
- * @constructor
+ *
+ * @class
  */
 class User {
   constructor({
@@ -21,8 +22,8 @@ class User {
   }
 
   /**
-   * @param {User} user
-   * @returns {{id: *, name: *, login: *}}
+   * @param {User} user user object
+   * @returns {{id: *, name: *, login: *}} user object without password
    */
   static toResponse(user) {
     const { id, name, login } = user;

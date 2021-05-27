@@ -1,13 +1,16 @@
 let Tasks = [];
 /**
  * Returns all tasks
- * @returns {Array.<Task>} array of tasks objects
+ *
+ * @param {string} boardId id of board from which to select task
+ * @returns {Promise<Array.<Task>>} array of tasks objects
  */
 const getAll = async (boardId) => Tasks.filter((el) => el.boardId === boardId)
 /**
  * Adds a new task object to array of tasks objects, returns new task
+ *
  * @param {Task} taskRow task to add
- * @returns {Task} task new object
+ * @returns {Promise<Task>} task new object
  */
 const addTask = async (taskRow) => {
   Tasks.push(taskRow);
@@ -15,9 +18,10 @@ const addTask = async (taskRow) => {
 }
 /**
  * Returns the task by its id
+ *
  * @param {string} boardId id of board from which to select task
  * @param {string} taskId task id
- * @returns {Task} task object
+ * @returns {Promise<Task>} task object
  */
 const getTask = async (boardId, taskId) => {
   const task = Tasks.find((el) =>  el.id === taskId && el.boardId === boardId);
@@ -25,8 +29,9 @@ const getTask = async (boardId, taskId) => {
 }
 /**
  * Deletes all user tasks
+ *
  * @param {string} userId user id
- * @returns {Array.<Task>} An updated array of tasks objects
+ * @returns {Promise<Array<Task>>} An updated array of tasks objects
  */
 const deleteTasksFromUser = async (userId) => {
   Tasks = Tasks.map((el) =>  el.userId === userId ? { ...el, userId: null } : el);
@@ -34,8 +39,9 @@ const deleteTasksFromUser = async (userId) => {
 }
 /**
  * Updates task data, returns updated task
+ *
  * @param {Task} taskRow task to update
- * @returns {Task}
+ * @returns {Promise<Task>} updated task
  */
 const updateTask = async (taskRow) => {
   const task = Tasks.find((el) =>  el.id === taskRow.id && el.boardId === taskRow.boardId);
@@ -50,8 +56,9 @@ const updateTask = async (taskRow) => {
 }
 /**
  * Deletes the task
- * @param {string} TaskId task id
- * @returns {boolean} Returns true if the item has been removed and false if not removed
+ *
+ * @param {string} taskId task id
+ * @returns {Promise<boolean>} Returns true if the item has been removed and false if not removed
  */
 const deleteTask = async (taskId) => {
   const task = Tasks.find((el) =>  el.id === taskId);
