@@ -1,3 +1,4 @@
+// @ts-nocheck
 const { v4: uuid } = require('uuid');
 /**
  * Task class

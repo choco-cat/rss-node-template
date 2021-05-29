@@ -1,7 +1,8 @@
+// @ts-nocheck
 const router = require('express').Router();
-const User = require('./user.model');
-const usersService = require('./user.service');
-const tasksService = require("../tasks/task.service");
+const User = require('./user.model.ts');
+const usersService = require('./user.service.ts');
+const tasksService = require("../tasks/task.service.ts");
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();

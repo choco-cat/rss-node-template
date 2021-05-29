@@ -1,4 +1,5 @@
-const boardsRepo = require('./board.memory.repository');
+// @ts-nocheck
+const boardsRepo = require('./board.memory.repository.ts');
 /**
  * Returns array of boards objects from boardsRepo
  *

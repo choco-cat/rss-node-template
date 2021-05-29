@@ -1,4 +1,5 @@
-const tasksRepo = require('./task.memory.repository');
+// @ts-nocheck
+const tasksRepo = require('./task.memory.repository.ts');
 /**
  * Returns array of tasks objects from tasksRepo
  *

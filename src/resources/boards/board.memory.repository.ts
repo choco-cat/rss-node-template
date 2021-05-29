@@ -1,3 +1,4 @@
+// @ts-nocheck
 const Boards = [];
 /**
  * Returns all boards

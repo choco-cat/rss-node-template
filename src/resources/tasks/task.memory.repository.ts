@@ -1,3 +1,4 @@
+// @ts-nocheck
 let Tasks = [];
 /**
  * Returns all tasks
