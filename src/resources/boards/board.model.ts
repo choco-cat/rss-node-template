@@ -1,16 +1,27 @@
-// @ts-nocheck
 const { v4: uuid } = require('uuid');
+
+interface IBoard {
+  id: string;
+  title: string;
+  columns: string[];
+}
 /**
  * Board class
  *
  * @class
  */
 class Board {
+  id: string;
+
+  title: string;
+
+  columns: string[];
+
   constructor({
     id = uuid(),
     title,
     columns = []
-  } = {}) {
+  } = {} as IBoard) {
     /** @type {string} */
     this.id = id;
     /** @type {string} */
@@ -21,3 +32,4 @@ class Board {
 }
 
 module.exports = Board;
+export {};

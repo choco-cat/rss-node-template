@@ -1,18 +1,21 @@
-// @ts-nocheck
-const Boards = [];
+const Board = require('./board.model.ts');
+
+type IBoard =  typeof Board;
+const Boards: IBoard[] = [];
+
 /**
  * Returns all boards
  *
  * @returns {Promise<Array<Board>>} array of boards objects
  */
-const getAll = async () => Boards;
+const getAll = async (): Promise<IBoard[]> => Boards;
 /**
  * Adds a new board object to array of boards objects, returns new board
  *
  * @param {Board} boardRow board to add
  * @returns {Promise<Board>} board object
  */
-const addBoard = async (boardRow) => {
+const addBoard = async (boardRow: IBoard): Promise<IBoard> => {
   Boards.push(boardRow);
   return boardRow;
 }
@@ -22,7 +25,7 @@ const addBoard = async (boardRow) => {
  * @param {string} boardId board id
  * @returns {Promise<Board>} board object
  */
-const getBoard = async (boardId) => {
+const getBoard = async (boardId: string): Promise<IBoard> => {
   const board = Boards.find((el) =>  el.id === boardId);
   return board;
 }
@@ -32,7 +35,7 @@ const getBoard = async (boardId) => {
  * @param {Board} boardRow changed board
  * @returns {Promise<Board>} updated board
  */
-const updateBoard = async (boardRow) => {
+const updateBoard = async (boardRow: IBoard): Promise<IBoard> => {
   const board = await Boards.find((el) =>  el.id === boardRow.id);
   if (board !== undefined) {
     board.title = boardRow.title;
@@ -46,7 +49,7 @@ const updateBoard = async (boardRow) => {
  * @param {string} boardId board id
  * @returns {Promise<boolean>} returns true if the item has been removed and false if not removed
  */
-const deleteBoard = async (boardId) => {
+const deleteBoard = async (boardId: string): Promise<boolean> => {
   const index = Boards.findIndex((el) => el.id === boardId);
   if (index > -1) {
     Boards.splice(index, 1);
@@ -55,3 +58,4 @@ const deleteBoard = async (boardId) => {
 }
 
 module.exports = { getAll, addBoard, getBoard, updateBoard, deleteBoard };
+export {};

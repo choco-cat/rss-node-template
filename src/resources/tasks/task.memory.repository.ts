@@ -1,19 +1,21 @@
-// @ts-nocheck
-let Tasks = [];
+const Task = require('./task.model.ts');
+
+type ITask =  typeof Task;
+let Tasks: ITask[] = [];
 /**
  * Returns all tasks
  *
  * @param {string} boardId id of board from which to select task
  * @returns {Promise<Array.<Task>>} array of tasks objects
  */
-const getAll = async (boardId) => Tasks.filter((el) => el.boardId === boardId)
+const getAll = async (boardId: string): Promise<ITask[]> => Tasks.filter((el) => el.boardId === boardId)
 /**
  * Adds a new task object to array of tasks objects, returns new task
  *
  * @param {Task} taskRow task to add
  * @returns {Promise<Task>} task new object
  */
-const addTask = async (taskRow) => {
+const addTask = async (taskRow: ITask): Promise<ITask> => {
   Tasks.push(taskRow);
   return taskRow;
 }
@@ -24,7 +26,7 @@ const addTask = async (taskRow) => {
  * @param {string} taskId task id
  * @returns {Promise<Task>} task object
  */
-const getTask = async (boardId, taskId) => {
+const getTask = async (boardId: string, taskId: string): Promise<ITask> => {
   const task = Tasks.find((el) =>  el.id === taskId && el.boardId === boardId);
   return task;
 }
@@ -34,7 +36,7 @@ const getTask = async (boardId, taskId) => {
  * @param {string} userId user id
  * @returns {Promise<Array<Task>>} An updated array of tasks objects
  */
-const deleteTasksFromUser = async (userId) => {
+const deleteTasksFromUser = async (userId: string): Promise<ITask[]> => {
   Tasks = Tasks.map((el) =>  el.userId === userId ? { ...el, userId: null } : el);
   return Tasks;
 }
@@ -44,7 +46,7 @@ const deleteTasksFromUser = async (userId) => {
  * @param {Task} taskRow task to update
  * @returns {Promise<Task>} updated task
  */
-const updateTask = async (taskRow) => {
+const updateTask = async (taskRow: ITask): Promise<ITask> => {
   const task = Tasks.find((el) =>  el.id === taskRow.id && el.boardId === taskRow.boardId);
   if (task !== undefined) {
     task.title = taskRow.title;
@@ -61,7 +63,7 @@ const updateTask = async (taskRow) => {
  * @param {string} taskId task id
  * @returns {Promise<boolean>} Returns true if the item has been removed and false if not removed
  */
-const deleteTask = async (taskId) => {
+const deleteTask = async (taskId: string): Promise<boolean> => {
   const task = Tasks.find((el) =>  el.id === taskId);
   const index = Tasks.indexOf(task);
   if (index > -1) {
@@ -71,3 +73,4 @@ const deleteTask = async (taskId) => {
 }
 
 module.exports = { getAll, addTask, getTask, updateTask, deleteTask, deleteTasksFromUser };
+export {};

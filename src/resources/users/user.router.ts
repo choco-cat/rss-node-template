@@ -25,7 +25,7 @@ router.route('/').post(async (req, res) => {
   if (newUser) {
     res.status(201).json(newUser);
   } else {
-    res.sendStatus(400).json({message: 'User not created'});
+    res.status(400).json({message: 'User not created'});
   }
 });
 
@@ -34,7 +34,7 @@ router.route('/:userid').put(async (req, res) => {
   if (updateUser) {
     res.status(200).json(updateUser);
   } else {
-    res.sendStatus(400).json({message: 'User updated'});
+    res.status(400).json({message: 'User updated'});
   }
 });
 
@@ -44,7 +44,7 @@ router.route('/:userid').delete(async (req, res) => {
   if (deleteUser) {
     res.status(204).json({message: 'User deleted'});
   } else {
-    res.sendStatus(404).json({message: 'User not found'});
+    res.status(404).json({message: 'User not found'});
   }
 });
 

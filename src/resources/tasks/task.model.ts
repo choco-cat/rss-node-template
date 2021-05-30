@@ -1,11 +1,34 @@
-// @ts-nocheck
 const { v4: uuid } = require('uuid');
+
+interface ITask {
+  boardId: string;
+  id: string;
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+  columnId: string;
+}
 /**
  * Task class
  *
  * @class
  */
 class Task {
+  boardId: string;
+
+  id: string;
+
+  title: string;
+
+  order: number;
+
+  description: string;
+
+  userId: string;
+
+  columnId: string;
+
   constructor({
     boardId,
     id = uuid(),
@@ -14,7 +37,7 @@ class Task {
     description,
     userId,
     columnId
-  } = {}) {
+  } = {} as ITask) {
     /** @type {string} */
     this.boardId = boardId;
     /** @type {string} */
@@ -33,3 +56,4 @@ class Task {
 }
 
 module.exports = Task;
+export {};
