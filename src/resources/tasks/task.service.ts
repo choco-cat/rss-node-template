@@ -9,7 +9,7 @@ type ITask =  typeof Task;
  * @param {string} boardId id of board from which to select tasks
  * @returns {Promise<Array<Task>>} array of tasks
  */
-const getAllTasks = async (boardId: string): Promise<ITask[]> => tasksRepo.getAll(boardId);
+const getAllTasks = async (boardId: string) => tasksRepo.getAll(boardId);
 /**
  * Adds a new task object to array of tasks objects in tasksRepo, returns new task
  *

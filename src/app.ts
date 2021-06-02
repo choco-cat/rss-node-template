@@ -12,11 +12,10 @@ const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.use(express.json());
+app.use(require('../middleware/logger.ts'));
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
 app.use('/', (req: Request, res: Response, next: NextFunction) => {
-
   if (req.originalUrl === '/') {
     res.send('Service is running!');
     return;
