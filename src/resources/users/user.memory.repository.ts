@@ -1,4 +1,5 @@
 const User = require('./user.model.ts');
+const ValidationError = require("../../middleware/validationError.ts");
 
 type IUser =  typeof User;
 const Users: IUser[] = [];
@@ -26,7 +27,10 @@ const addUser = async (userRow: IUser): Promise<IUser> => {
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
 const getUser = async (userId: string): Promise<Partial<IUser>> => {
-  const user = Users.find((el) =>  el.id === userId);
+  const user = Users.find((el) =>  el.id === userId) || null;
+  if (!user) {
+    return new ValidationError('User not found', '404');
+  }
   return User.toResponse(user);
 }
 /**
@@ -37,9 +41,9 @@ const getUser = async (userId: string): Promise<Partial<IUser>> => {
  */
 const updateUser = async (userRow: IUser) => {
   const user = Users.find((el) =>  el.id === userRow.id) || {};
-    user.name = userRow.name;
-    user.login = userRow.login;
-    user.password = userRow.password;
+  user.name = userRow.name;
+  user.login = userRow.login;
+  user.password = userRow.password;
   return User.toResponse(user);
 }
 /**
@@ -58,3 +62,4 @@ const deleteUser = async (userId: string): Promise<boolean> => {
 }
 
 module.exports = { getAll, addUser, getUser, updateUser, deleteUser };
+export {};

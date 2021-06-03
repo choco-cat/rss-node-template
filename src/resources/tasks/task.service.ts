@@ -24,7 +24,7 @@ const addTask = async (taskRow: typeof Task): Promise<ITask> => tasksRepo.addTas
  * @param {string} taskId task id
  * @returns {Promise<Task>} task
  */
-const getTask = async (boardId: string, taskId: string): Promise<ITask> => tasksRepo.getTask(boardId, taskId);
+const getTask = async (boardId: string, taskId: string): Promise<ITask|Error> => tasksRepo.getTask(boardId, taskId);
 /**
  * Updates task data, returns updated task
  *

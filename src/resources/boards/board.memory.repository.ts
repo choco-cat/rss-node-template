@@ -1,4 +1,5 @@
 const Board = require('./board.model.ts');
+const ValidationError = require("../../middleware/validationError.ts");
 
 type IBoard =  typeof Board;
 const Boards: IBoard[] = [];
@@ -26,7 +27,10 @@ const addBoard = async (boardRow: IBoard): Promise<IBoard> => {
  * @returns {Promise<Board>} board object
  */
 const getBoard = async (boardId: string): Promise<IBoard> => {
-  const board = Boards.find((el) =>  el.id === boardId);
+  const board = Boards.find((el) =>  el.id === boardId) || null;
+  if (!board) {
+    return new ValidationError('Error get board!', '404');
+  }
   return board;
 }
 /**

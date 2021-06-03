@@ -1,4 +1,5 @@
 const Task = require('./task.model.ts');
+const ValidationError = require("../../middleware/validationError.ts");
 
 type ITask =  typeof Task;
 let Tasks: ITask[] = [];
@@ -27,7 +28,10 @@ const addTask = async (taskRow: ITask): Promise<ITask> => {
  * @returns {Promise<Task>} task object
  */
 const getTask = async (boardId: string, taskId: string): Promise<ITask> => {
-  const task = Tasks.find((el) =>  el.id === taskId && el.boardId === boardId);
+  const task = Tasks.find((el) =>  el.id === taskId && el.boardId === boardId) || null;
+  if (!task) {
+    return new ValidationError('Error get task!', '404');
+  }
   return task;
 }
 /**

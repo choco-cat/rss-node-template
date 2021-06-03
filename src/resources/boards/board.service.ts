@@ -21,7 +21,7 @@ const addBoard = async (boardRow: IBoard): Promise<IBoard> => boardsRepo.addBoar
  * @param {string} boardId board id
  * @returns {Promise<Board>} board
  */
-const getBoard = async (boardId: string): Promise<IBoard> => boardsRepo.getBoard(boardId);
+const getBoard = async (boardId: string): Promise<IBoard|Error> => boardsRepo.getBoard(boardId);
 /**
  * Updates board data, returns updated board
  *

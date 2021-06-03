@@ -3,7 +3,7 @@ const { v4: uuid } = require('uuid');
 interface IBoard {
   id: string;
   title: string;
-  columns: string[];
+  columns: [];
 }
 /**
  * Board class
@@ -15,7 +15,7 @@ class Board {
 
   title: string;
 
-  columns: string[];
+  columns: [];
 
   constructor({
     id = uuid(),

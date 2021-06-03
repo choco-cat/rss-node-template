@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Request, Response } from 'express';
+import {NextFunction, Request, Response} from 'express';
 
 const Task = require('./task.model.ts');
 const tasksService = require('./task.service.ts');
@@ -27,16 +27,17 @@ router.route('/').post(async (req: Request, res: Response) => {
     res.status(400).json({message: 'newTask not created'});
   }
 });
-
-router.route('/:taskId').get(async (req: Request, res: Response) => {
+const routeGetTask = async (req: Request, res: Response, _next: NextFunction) => {
   const { boardId, taskId } = req.params;
   const task = await tasksService.getTask(boardId, taskId);
-  if (task) {
-    res.status(200).json(task);
+  if (task instanceof Error) {
+    throw task;
   } else {
-    res.status(404).json({message: 'Task not found'});
+    res.status(200).json(task);
   }
-});
+}
+
+router.route('/:taskId').get(async (req: Request, res: Response, next: NextFunction) => routeGetTask(req, res, next).catch(next));
 
 router.route('/:id').put(async (req: Request, res: Response) => {
   const { boardId, id } = req.params;

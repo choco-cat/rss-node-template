@@ -28,7 +28,7 @@ const getUser = async (userId: string): Promise<Partial<IUser>> => usersRepo.get
  * @param {User} userRow user to update
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
-const updateUser = async (userRow: IUser): Promise<Partial<IUser>> => usersRepo.updateUser(userRow);
+const updateUser = async (userRow: IUser): Promise<Partial<IUser>|Error> => usersRepo.updateUser(userRow);
 /**
  * Deletes the user
  *
