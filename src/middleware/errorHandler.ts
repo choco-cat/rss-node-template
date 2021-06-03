@@ -14,4 +14,12 @@ function errorHandler(err: Error|typeof ValidationError, _req: Request, res: Res
     next();
 }
 
-module.exports = errorHandler;
+function uncaughtExceptionHandler(err: Error): void {
+    logger.log('error', `Uncaught error: ${err}`, () => process.exit(1));
+}
+
+function unhandledRejectionHandler(reason: PromiseRejectionEvent): void {
+    logger.log('error', `Unhandled rejection error: ${JSON.stringify(reason)}`, () => process.exit(1));
+}
+
+module.exports = { errorHandler, uncaughtExceptionHandler, unhandledRejectionHandler };
