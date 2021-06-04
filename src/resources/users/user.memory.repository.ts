@@ -9,7 +9,12 @@ const Users: IUser[] = [];
  *
  * @returns {Promise<Array<User>>} array of users objects
  */
-const getAll = async (): Promise<IUser[]> => Array.isArray(Users) ? Users.map(User.toResponse) : new ValidationError('Server error', '500');
+const getAll = async (): Promise<IUser[]> => {
+  if (!Array.isArray(Users)) {
+    throw new ValidationError('Server error', '500');
+  }
+  return Users.map(User.toResponse);
+}
 
 /**
  * Adds a new user object to array of users objects, returns new user
@@ -19,7 +24,7 @@ const getAll = async (): Promise<IUser[]> => Array.isArray(Users) ? Users.map(Us
  */
 const addUser = async (userRow: IUser): Promise<IUser> => {
   if (!Array.isArray(Users)) {
-    return new ValidationError('Server error', '500');
+    throw new ValidationError('Server error', '500');
   }
   Users.push(userRow);
   return User.toResponse(userRow);
@@ -33,7 +38,7 @@ const addUser = async (userRow: IUser): Promise<IUser> => {
 const getUser = async (userId: string): Promise<Partial<IUser>> => {
   const user = Users.find((el) =>  el.id === userId) || null;
   if (!user) {
-    return new ValidationError(`User with id = ${userId} not found`, '404');
+    throw new ValidationError(`User with id = ${userId} not found`, '404');
   }
   return User.toResponse(user);
 }
@@ -46,7 +51,7 @@ const getUser = async (userId: string): Promise<Partial<IUser>> => {
 const updateUser = async (userRow: IUser) => {
   const user = Users.find((el) =>  el.id === userRow.id) || null;
   if (!user) {
-    return new ValidationError(`User with id = ${userRow.id} not found`, '404');
+    throw new ValidationError(`User with id = ${userRow.id} not found`, '404');
   }
   if (user !== null && (typeof user === "object")) {
     user.name = userRow.name;
@@ -64,7 +69,7 @@ const updateUser = async (userRow: IUser) => {
 const deleteUser = async (userId: string): Promise<boolean> => {
   const user = Users.find((el) => el.id === userId) || null;
   if (!user) {
-    return new ValidationError(`User with id = ${userId} not found`, '404');
+    throw new ValidationError(`User with id = ${userId} not found`, '404');
   }
   const index = Users.indexOf(user);
   if (index > -1) {

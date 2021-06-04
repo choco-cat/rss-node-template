@@ -8,6 +8,7 @@ const userRouter = require('./resources/users/user.router.ts');
 const boardRouter = require('./resources/boards/board.router.ts');
 const taskRouter = require('./resources/tasks/task.router.ts');
 const { errorHandler, uncaughtExceptionHandler, unhandledRejectionHandler } = require('./middleware/errorHandler.ts');
+
 const logger = require('./middleware/logger.ts');
 
 const app = express();
