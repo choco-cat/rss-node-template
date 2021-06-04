@@ -1,9 +1,9 @@
-const { BAD_REQUEST } = require('http-status-codes');
+const { INTERNAL_SERVER_ERROR, StatusCodes, getReasonPhrase } = require('http-status-codes');
 
 class ValidationError extends Error {
     status;
 
-    constructor(message: string, status = BAD_REQUEST) {
+    constructor(message = getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR), status = INTERNAL_SERVER_ERROR) {
         super(message);
         this.name = this.constructor.name;
         this.status = status;

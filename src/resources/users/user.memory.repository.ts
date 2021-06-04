@@ -1,3 +1,4 @@
+const { NOT_FOUND } = require('http-status-codes');
 const User = require('./user.model.ts');
 const ValidationError = require("../../middleware/validationError.ts");
 
@@ -11,7 +12,7 @@ const Users: IUser[] = [];
  */
 const getAll = async (): Promise<IUser[]> => {
   if (!Array.isArray(Users)) {
-    throw new ValidationError('Server error', '500');
+    throw new ValidationError();
   }
   return Users.map(User.toResponse);
 }
@@ -24,7 +25,7 @@ const getAll = async (): Promise<IUser[]> => {
  */
 const addUser = async (userRow: IUser): Promise<IUser> => {
   if (!Array.isArray(Users)) {
-    throw new ValidationError('Server error', '500');
+    throw new ValidationError();
   }
   Users.push(userRow);
   return User.toResponse(userRow);
@@ -38,7 +39,7 @@ const addUser = async (userRow: IUser): Promise<IUser> => {
 const getUser = async (userId: string): Promise<Partial<IUser>> => {
   const user = Users.find((el) =>  el.id === userId) || null;
   if (!user) {
-    throw new ValidationError(`User with id = ${userId} not found`, '404');
+    throw new ValidationError(`User with id = ${userId} not found`, NOT_FOUND);
   }
   return User.toResponse(user);
 }
@@ -51,7 +52,7 @@ const getUser = async (userId: string): Promise<Partial<IUser>> => {
 const updateUser = async (userRow: IUser) => {
   const user = Users.find((el) =>  el.id === userRow.id) || null;
   if (!user) {
-    throw new ValidationError(`User with id = ${userRow.id} not found`, '404');
+    throw new ValidationError(`User with id = ${userRow.id} not found`, NOT_FOUND);
   }
   if (user !== null && (typeof user === "object")) {
     user.name = userRow.name;
@@ -69,7 +70,7 @@ const updateUser = async (userRow: IUser) => {
 const deleteUser = async (userId: string): Promise<boolean> => {
   const user = Users.find((el) => el.id === userId) || null;
   if (!user) {
-    throw new ValidationError(`User with id = ${userId} not found`, '404');
+    throw new ValidationError(`User with id = ${userId} not found`, NOT_FOUND);
   }
   const index = Users.indexOf(user);
   if (index > -1) {

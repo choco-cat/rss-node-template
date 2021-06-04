@@ -1,3 +1,4 @@
+const { NOT_FOUND } = require('http-status-codes');
 const Task = require('./task.model.ts');
 const ValidationError = require("../../middleware/validationError.ts");
 
@@ -11,7 +12,7 @@ let Tasks: ITask[] = [];
  */
 const getAll = async (boardId: string): Promise<ITask[]> => {
   if (!Array.isArray(Tasks)) {
-    throw new ValidationError('Server error', '500');
+    throw new ValidationError();
   }
   return Tasks.filter((el) => el.boardId === boardId);
 }
@@ -23,7 +24,7 @@ const getAll = async (boardId: string): Promise<ITask[]> => {
  */
 const addTask = async (taskRow: ITask): Promise<ITask> => {
   if (!Array.isArray(Tasks)) {
-    throw new ValidationError('Server error', '500');
+    throw new ValidationError();
   }
   Tasks.push(taskRow);
   return taskRow;
@@ -38,7 +39,7 @@ const addTask = async (taskRow: ITask): Promise<ITask> => {
 const getTask = async (boardId: string, taskId: string): Promise<ITask> => {
   const task = Tasks.find((el) =>  el.id === taskId && el.boardId === boardId) || null;
   if (!task) {
-    throw new ValidationError(`Task with id = ${taskId} not found`, '404');
+    throw new ValidationError(`Task with id = ${taskId} not found`, NOT_FOUND);
   }
   return task;
 }
@@ -50,7 +51,7 @@ const getTask = async (boardId: string, taskId: string): Promise<ITask> => {
  */
 const deleteTasksFromUser = async (userId: string): Promise<ITask[]> => {
   if (!Array.isArray(Tasks)) {
-    throw new ValidationError('Server error', '500');
+    throw new ValidationError();
   }
   Tasks = Tasks.map((el) =>  el.userId === userId ? { ...el, userId: null } : el);
   return Tasks;
@@ -64,7 +65,7 @@ const deleteTasksFromUser = async (userId: string): Promise<ITask[]> => {
 const updateTask = async (taskRow: ITask): Promise<ITask> => {
   const task = Tasks.find((el) =>  el.id === taskRow.id && el.boardId === taskRow.boardId) || null;
   if (!task) {
-    throw new ValidationError(`Task with id = ${taskRow.id} not found`, '404');
+    throw new ValidationError(`Task with id = ${taskRow.id} not found`, NOT_FOUND);
   }
   if (task !== undefined) {
     task.title = taskRow.title;
@@ -84,7 +85,7 @@ const updateTask = async (taskRow: ITask): Promise<ITask> => {
 const deleteTask = async (taskId: string): Promise<boolean> => {
   const task = Tasks.find((el) =>  el.id === taskId);
   if (!task) {
-    throw new ValidationError(`Task with id = ${taskId} not found`, '404');
+    throw new ValidationError(`Task with id = ${taskId} not found`, NOT_FOUND);
   }
   const index = Tasks.indexOf(task);
   if (index > -1) {

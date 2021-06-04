@@ -1,3 +1,4 @@
+const { NOT_FOUND } = require('http-status-codes');
 const Board = require('./board.model.ts');
 const ValidationError = require("../../middleware/validationError.ts");
 
@@ -11,7 +12,7 @@ const Boards: IBoard[] = [];
  */
 const getAll = async (): Promise<IBoard[]> => {
   if (!Array.isArray(Boards)) {
-    throw new ValidationError('Server error', '500');
+    throw new ValidationError();
   }
   return Boards;
 }
@@ -23,7 +24,7 @@ const getAll = async (): Promise<IBoard[]> => {
  */
 const addBoard = async (boardRow: IBoard): Promise<IBoard> => {
   if (!Array.isArray(Boards)) {
-    throw new ValidationError('Server error', '500');
+    throw new ValidationError();
   }
   Boards.push(boardRow);
   return boardRow;
@@ -37,7 +38,7 @@ const addBoard = async (boardRow: IBoard): Promise<IBoard> => {
 const getBoard = async (boardId: string): Promise<IBoard> => {
   const board = Boards.find((el) =>  el.id === boardId) || null;
   if (!board) {
-    throw new ValidationError(`Board with id = ${boardId} not found`, '404');
+    throw new ValidationError(`Board with id = ${boardId} not found`, NOT_FOUND);
   }
   return board;
 }
@@ -50,7 +51,7 @@ const getBoard = async (boardId: string): Promise<IBoard> => {
 const updateBoard = async (boardRow: IBoard): Promise<IBoard> => {
   const board = await Boards.find((el) =>  el.id === boardRow.id) || null;
   if (!board) {
-    throw new ValidationError(`Board with id = ${boardRow.id} not found`, '404');
+    throw new ValidationError(`Board with id = ${boardRow.id} not found`, NOT_FOUND);
   }
   if (board !== null && (typeof board === "object")) {
     board.title = boardRow.title;
@@ -67,7 +68,7 @@ const updateBoard = async (boardRow: IBoard): Promise<IBoard> => {
 const deleteBoard = async (boardId: string): Promise<boolean> => {
   const index = Boards.findIndex((el) => el.id === boardId);
   if (index === -1) {
-    throw new ValidationError(`Board with id = ${boardId} not found`, '404');
+    throw new ValidationError(`Board with id = ${boardId} not found`, NOT_FOUND);
   }
   Boards.splice(index, 1);
   return index !== -1 ;
