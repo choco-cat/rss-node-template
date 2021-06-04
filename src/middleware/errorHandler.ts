@@ -18,8 +18,8 @@ const uncaughtExceptionHandler = (err: Error): void => {
     logger.log('error', `Uncaught error: ${err}`, () => process.exit(1));
 }
 
-const unhandledRejectionHandler = (reason: PromiseRejectionEvent): void => {
-    logger.log('error', `Unhandled rejection error: ${JSON.stringify(reason)}`, () => process.exit(1));
+const unhandledRejectionHandler = (err: Error): void => {
+    logger.log('error', `Unhandled rejection error: ${err}`, () => process.exit(1));
 }
 
 module.exports = { errorHandler, uncaughtExceptionHandler, unhandledRejectionHandler };

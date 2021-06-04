@@ -32,7 +32,7 @@ const addBoard = async (boardRow: IBoard): Promise<IBoard> => {
 const getBoard = async (boardId: string): Promise<IBoard> => {
   const board = Boards.find((el) =>  el.id === boardId) || null;
   if (!board) {
-    return new ValidationError(`Board with id = ${boardId} not found!`, '404');
+    return new ValidationError(`Board with id = ${boardId} not found`, '404');
   }
   return board;
 }
