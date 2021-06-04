@@ -9,7 +9,7 @@ const Boards: IBoard[] = [];
  *
  * @returns {Promise<Array<Board>>} array of boards objects
  */
-const getAll = async (): Promise<IBoard[]> => Boards;
+const getAll = async (): Promise<IBoard[]> => Array.isArray(Boards) ? Boards : new ValidationError('Server error', '500');
 /**
  * Adds a new board object to array of boards objects, returns new board
  *
@@ -17,6 +17,9 @@ const getAll = async (): Promise<IBoard[]> => Boards;
  * @returns {Promise<Board>} board object
  */
 const addBoard = async (boardRow: IBoard): Promise<IBoard> => {
+  if (!Array.isArray(Boards)) {
+    return new ValidationError('Server error', '500');
+  }
   Boards.push(boardRow);
   return boardRow;
 }
@@ -29,7 +32,7 @@ const addBoard = async (boardRow: IBoard): Promise<IBoard> => {
 const getBoard = async (boardId: string): Promise<IBoard> => {
   const board = Boards.find((el) =>  el.id === boardId) || null;
   if (!board) {
-    return new ValidationError('Error get board!', '404');
+    return new ValidationError(`Board with id = ${boardId} not found!`, '404');
   }
   return board;
 }
@@ -40,8 +43,11 @@ const getBoard = async (boardId: string): Promise<IBoard> => {
  * @returns {Promise<Board>} updated board
  */
 const updateBoard = async (boardRow: IBoard): Promise<IBoard> => {
-  const board = await Boards.find((el) =>  el.id === boardRow.id);
-  if (board !== undefined) {
+  const board = await Boards.find((el) =>  el.id === boardRow.id) || null;
+  if (!board) {
+    return new ValidationError(`Board with id = ${boardRow.id} not found`, '404');
+  }
+  if (board !== null && (typeof board === "object")) {
     board.title = boardRow.title;
     board.columns = [...boardRow.columns]
   }
@@ -55,9 +61,10 @@ const updateBoard = async (boardRow: IBoard): Promise<IBoard> => {
  */
 const deleteBoard = async (boardId: string): Promise<boolean> => {
   const index = Boards.findIndex((el) => el.id === boardId);
-  if (index > -1) {
-    Boards.splice(index, 1);
+  if (index === -1) {
+    return new ValidationError(`Board with id = ${boardId} not found`, '404');
   }
+  Boards.splice(index, 1);
   return index !== -1 ;
 }
 

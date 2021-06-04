@@ -28,34 +28,34 @@ const routeGetUser = async (req: Request, res: Response, _next: NextFunction) =>
 router.route('/:userId').get(async (req: Request, res: Response, next: NextFunction) => routeGetUser(req, res, next).catch(next));
 
 const routeNewUser = async (req: Request, res: Response, _next: NextFunction) => {
-  const newUser = await usersService.addUser(new User(req.body));
-  if (newUser) {
-    res.status(201).json(newUser);
+  const response = await usersService.addUser(new User(req.body));
+  if (response instanceof Error) {
+    throw response;
   } else {
-    res.status(400).json({message: 'User not created'});
+    res.status(201).json(response);
   }
 }
 router.route('/').post(async (req: Request, res: Response, next: NextFunction) => routeNewUser(req, res, next).catch(next));
 
 const routeUpdateUser = async (req: Request, res: Response, _next: NextFunction) => {
   const  { userId } = req.params;
-  const updateUser = await usersService.updateUser(new User({id: userId, ...req.body}));
-  if (updateUser instanceof Error) {
-    throw updateUser;
+  const response = await usersService.updateUser(new User({id: userId, ...req.body}));
+  if (response instanceof Error) {
+    throw response;
   } else {
-    res.status(200).json(updateUser);
+    res.status(200).json(response);
   }
 }
 router.route('/:userId').put(async (req: Request, res: Response, next: NextFunction) => routeUpdateUser(req, res, next).catch(next));
 
 const routeDeleteUser = async (req: Request, res: Response, _next: NextFunction) => {
   const  { userId } = req.params;
-  const deleteUser = await usersService.deleteUser(userId);
+  const response = await usersService.deleteUser(userId);
   await tasksService.deleteTasksFromUser(userId);
-  if (deleteUser) {
-    res.status(204).json({message: 'User deleted'});
+  if (response instanceof Error) {
+    throw response;
   } else {
-    res.status(404).json({message: 'User not found'});
+    res.status(204).json({message: 'User deleted'});
   }
 }
 router.route('/:userId').delete(async (req: Request, res: Response, next: NextFunction) => routeDeleteUser(req, res, next).catch(next));

@@ -9,52 +9,59 @@ const Task = require("../tasks/task.model.ts");
 
 type ITask =  typeof Task;
 
-router.route('/').get(async (_req: Request, res: Response) => {
-  const boards = await boardsService.getAllBoards();
-  res.status(200).json(boards);
-});
+const routeGetBoards = async (_req: Request, res: Response, _next: NextFunction) => {
+  const response = await boardsService.getAllBoards();
+  if (response instanceof Error) {
+    throw response;
+  } else {
+    res.status(200).json(response);
+  }
+}
+router.route('/').get(async(req: Request, res: Response, next: NextFunction) => routeGetBoards(req, res, next).catch(next));
 
 const routeGetBoard = async (req: Request, res: Response, _next: NextFunction) => {
   const  { boardId } = req.params;
-  const board = await boardsService.getBoard(boardId);
-  if (board instanceof Error) {
-    throw board;
+  const response = await boardsService.getBoard(boardId);
+  if (response instanceof Error) {
+    throw response;
   } else {
-    res.status(200).json(board);
+    res.status(200).json(response);
   }
-};
-
+}
 router.route('/:boardId').get(async (req: Request, res: Response, next: NextFunction) => routeGetBoard(req, res, next).catch(next));
 
-router.route('/').post(async (req, res) => {
-  const newBoard = await boardsService.addBoard(new Board(req.body));
-  if (newBoard) {
-    res.status(201).json(newBoard);
+const routeAddBoard = async (req: Request, res: Response, _next: NextFunction) => {
+  const response = await boardsService.addBoard(new Board(req.body));
+  if (response instanceof Error) {
+    throw response;
   } else {
-    res.sendStatus(400).json({message: 'Board not created'});
+    res.status(201).json(response);
   }
-});
+}
+router.route('/').post(async (req: Request, res: Response, next: NextFunction) => routeAddBoard(req, res, next).catch(next));
 
-router.route('/:boardId').put(async (req, res) => {
+const routeUpdateBoard = async (req: Request, res: Response, _next: NextFunction) => {
   const  { boardId } = req.params;
-  const updateBoard = await boardsService.updateBoard(new Board({ id: boardId, ...req.body }));
-  if (updateBoard) {
-    res.status(200).json(updateBoard);
+  const response = await boardsService.updateBoard(new Board({ id: boardId, ...req.body }));
+  if (response instanceof Error) {
+    throw response;
   } else {
-    res.sendStatus(400).json({message: 'Board updated'});
+    res.status(200).json(response);
   }
-});
+}
+router.route('/:boardId').put(async (req: Request, res: Response, next: NextFunction) => routeUpdateBoard(req, res, next).catch(next));
 
-router.route('/:boardId').delete(async (req, res) => {
+const routeDeleteBoard = async (req: Request, res: Response, _next: NextFunction) => {
   const  { boardId } = req.params;
-  const deleteBoard = await boardsService.deleteBoard(boardId);
+  const response = await boardsService.deleteBoard(boardId);
   const tasksFromBoard = await tasksService.getAllTasks(boardId);
   await tasksFromBoard.forEach((task: ITask) => tasksService.deleteTask(task.id));
-  if (deleteBoard) {
-    res.status(204).json({message: 'Board deleted'});
+  if (response instanceof Error) {
+    throw response;
   } else {
-    res.sendStatus(404).json({message: 'Board not found'});
+    res.status(204).json({message: 'Board deleted'});
   }
-});
+}
+router.route('/:boardId').delete(async (req: Request, res: Response, next: NextFunction) => routeDeleteBoard(req, res, next).catch(next));
 
 module.exports = router;

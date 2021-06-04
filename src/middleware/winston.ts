@@ -28,9 +28,7 @@ const logger = createLogger({
 });
 
 logger.stream = {
-    write(message:string){
-       logger.info(message);
-    }
+    write: (message: string) :void => logger.info(message)
 };
 
 module.exports = logger;
