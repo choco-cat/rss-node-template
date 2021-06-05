@@ -10,13 +10,7 @@ const Users: IUser[] = [];
  *
  * @returns {Promise<Array<User>>} array of users objects
  */
-const getAll = async (): Promise<IUser[]> => {
-  if (!Array.isArray(Users)) {
-    throw new ValidationError();
-  }
-  return Users.map(User.toResponse);
-}
-
+const getAll = async (): Promise<IUser[]> => Users.map(User.toResponse);
 /**
  * Adds a new user object to array of users objects, returns new user
  *
@@ -24,9 +18,6 @@ const getAll = async (): Promise<IUser[]> => {
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
 const addUser = async (userRow: IUser): Promise<IUser> => {
-  if (!Array.isArray(Users)) {
-    throw new ValidationError();
-  }
   Users.push(userRow);
   return User.toResponse(userRow);
 }

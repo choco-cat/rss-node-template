@@ -10,12 +10,7 @@ const Boards: IBoard[] = [];
  *
  * @returns {Promise<Array<Board>>} array of boards objects
  */
-const getAll = async (): Promise<IBoard[]> => {
-  if (!Array.isArray(Boards)) {
-    throw new ValidationError();
-  }
-  return Boards;
-}
+const getAll = async (): Promise<IBoard[]> => Boards;
 /**
  * Adds a new board object to array of boards objects, returns new board
  *
@@ -23,9 +18,6 @@ const getAll = async (): Promise<IBoard[]> => {
  * @returns {Promise<Board>} board object
  */
 const addBoard = async (boardRow: IBoard): Promise<IBoard> => {
-  if (!Array.isArray(Boards)) {
-    throw new ValidationError();
-  }
   Boards.push(boardRow);
   return boardRow;
 }

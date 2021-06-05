@@ -4,7 +4,7 @@ const { INTERNAL_SERVER_ERROR } = require('http-status-codes');
 const ValidationError = require("./validationError.ts");
 const logger = require('./winston.ts');
 
-const errorHandler = (err: Error|typeof ValidationError, _req: Request, res: Response, next: NextFunction): void => {
+const errorHandler = (err: Error | typeof ValidationError, _req: Request, res: Response, next: NextFunction): void => {
     if (err instanceof ValidationError) {
         res.status(err.status).send(err.message);
     } else {

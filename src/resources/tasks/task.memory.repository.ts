@@ -10,12 +10,7 @@ let Tasks: ITask[] = [];
  * @param {string} boardId id of board from which to select task
  * @returns {Promise<Array.<Task>>} array of tasks objects
  */
-const getAll = async (boardId: string): Promise<ITask[]> => {
-  if (!Array.isArray(Tasks)) {
-    throw new ValidationError();
-  }
-  return Tasks.filter((el) => el.boardId === boardId);
-}
+const getAll = async (boardId: string): Promise<ITask[]> => Tasks.filter((el) => el.boardId === boardId);
 /**
  * Adds a new task object to array of tasks objects, returns new task
  *
@@ -23,9 +18,6 @@ const getAll = async (boardId: string): Promise<ITask[]> => {
  * @returns {Promise<Task>} task new object
  */
 const addTask = async (taskRow: ITask): Promise<ITask> => {
-  if (!Array.isArray(Tasks)) {
-    throw new ValidationError();
-  }
   Tasks.push(taskRow);
   return taskRow;
 }
@@ -50,9 +42,6 @@ const getTask = async (boardId: string, taskId: string): Promise<ITask> => {
  * @returns {Promise<Array<Task>>} An updated array of tasks objects
  */
 const deleteTasksFromUser = async (userId: string): Promise<ITask[]> => {
-  if (!Array.isArray(Tasks)) {
-    throw new ValidationError();
-  }
   Tasks = Tasks.map((el) =>  el.userId === userId ? { ...el, userId: null } : el);
   return Tasks;
 }
