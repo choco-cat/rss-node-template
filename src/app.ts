@@ -28,6 +28,7 @@ app.use('/boards/:boardId/tasks', taskRouter);
 app.use('/boards', boardRouter);
 app.use(errorHandler);
 process.on('uncaughtException', uncaughtExceptionHandler);
+// throw Error('Oops!');
 process.on('unhandledRejection', unhandledRejectionHandler);
-
+// Promise.reject(Error('Oops!'))
 module.exports = app;
