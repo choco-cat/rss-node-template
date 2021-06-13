@@ -15,11 +15,13 @@ const errorHandler = (err: Error | typeof ValidationError, _req: Request, res: R
 };
 
 const uncaughtExceptionHandler = (err: Error): void => {
-    logger.error(`Uncaught error: ${err}`, () => () => process.exit(1));
+    logger.error(`Uncaught error: ${err}`);
+    process.exit(1);
 };
 
 const unhandledRejectionHandler = (err: Error): void => {
-    logger.error( `Unhandled rejection error: ${err}`, () => process.exit(1));
+    logger.error( `Unhandled rejection error: ${err}`);
+    process.exit(1);
 };
 
 module.exports = { errorHandler, uncaughtExceptionHandler, unhandledRejectionHandler };
