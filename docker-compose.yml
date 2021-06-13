@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  express:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile.express
+    networks:
+      - user_network
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - ./logs:/usr/app/logs
+      - ./src:/usr/app/src
+    restart: always
+    depends_on:
+      - postgres
+  postgres:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    networks:
+      - user_network
+    volumes:
+      - .:/usr/src/app/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    environment:
+      POSTGRES_USER: DB_USER
+      POSTGRES_PASSWORD: DB_PASS
+      POSTGRES_DB: DB_NAME
+      POSTGRES_HOST: DB_HOST
+      POSTGRES_PORT: DB_PORT
+    restart: always
+
+networks:
+  user_network:
+    driver: bridge
