@@ -2,7 +2,7 @@ version: "3.9"
 services:
   express:
     container_name: rss-node-template-express
-    image: chocola/node-js-2021:nodejs-express
+    image: chocola/node-js-2021:latest
     env_file:
       - .env
     build:
@@ -20,7 +20,7 @@ services:
       - postgres
   postgres:
     container_name: rss-node-template-posgres
-    image: chocola/node-js-2021-posgres
+    image: chocola/node-js-2021-posgres:latest
     env_file:
       - .env
     build:
@@ -29,7 +29,7 @@ services:
     networks:
       - user_network
     volumes:
-      - .:/usr/src/app/data
+      - ./data:/var/lib/postgresql/data
     ports:
       - ${DB_PORT}:${DB_PORT}
     environment:
