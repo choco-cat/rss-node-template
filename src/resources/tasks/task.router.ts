@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Request, Response } from 'express';
+import {NextFunction, Request, Response} from 'express';
 
 const Task = require('./task.model.ts');
 const tasksService = require('./task.service.ts');
@@ -8,54 +8,36 @@ const router = express.Router({mergeParams: true});
 
 router.route('/').get(async (req: Request, res: Response) => {
   const  { boardId } = req.params;
-  const tasks = await tasksService.getAllTasks(boardId);
-  if (tasks.length > 0) {
-    res.status(200).json(tasks);
-  } else {
-    res.status(404).json({message: 'Tasks not found'});
-  }
+  const response = await tasksService.getAllTasks(boardId);
+  res.status(200).json(response);
 });
-
-router.route('/').post(async (req: Request, res: Response) => {
+const routeAddTask = async (req: Request, res: Response, _next: NextFunction) => {
   const { boardId } = req.params;
   const reqTask = { ...req.body, boardId };
-  const newTask = await tasksService.addTask(new Task(reqTask));
+  const response = await tasksService.addTask(new Task(reqTask));
+  res.status(201).json(response);
+}
+router.route('/').post(async (req: Request, res: Response, next: NextFunction) => routeAddTask(req, res, next).catch(next));
 
-  if (newTask) {
-    res.status(201).json(newTask);
-  } else {
-    res.status(400).json({message: 'newTask not created'});
-  }
-});
-
-router.route('/:taskId').get(async (req: Request, res: Response) => {
+const routeGetTask = async (req: Request, res: Response, _next: NextFunction) => {
   const { boardId, taskId } = req.params;
-  const task = await tasksService.getTask(boardId, taskId);
-  if (task) {
-    res.status(200).json(task);
-  } else {
-    res.status(404).json({message: 'Task not found'});
-  }
-});
+  const response = await tasksService.getTask(boardId, taskId);
+  res.status(200).json(response);
+}
+router.route('/:taskId').get(async (req: Request, res: Response, next: NextFunction) => routeGetTask(req, res, next).catch(next));
 
-router.route('/:id').put(async (req: Request, res: Response) => {
-  const { boardId, id } = req.params;
-  const updateTask = await tasksService.updateTask(new Task({ boardId, id, ...req.body }));
-  if (updateTask) {
-    res.status(200).json(updateTask);
-  } else {
-    res.status(400).json({message: 'Task updated'});
-  }
-});
+const routeUpdateTask = async (req: Request, res: Response, _next: NextFunction) => {
+  const { boardId, taskId } = req.params;
+  const response = await tasksService.updateTask(new Task({ boardId, taskId, ...req.body }));
+  res.status(200).json(response);
+}
+router.route('/:taskId').put(async (req: Request, res: Response, next: NextFunction) => routeUpdateTask(req, res, next).catch(next));
 
-router.route('/:id').delete(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const deleteTask = await tasksService.deleteTask(id);
-  if (deleteTask) {
-    res.status(204).json({message: 'Task deleted'});
-  } else {
-    res.status(404).json({message: 'Task not found'});
-  }
-});
+const routeDeleteTask = async (req: Request, res: Response, _next: NextFunction) => {
+  const { taskId } = req.params;
+  await tasksService.deleteTask(taskId);
+  res.status(204).json({message: 'Task deleted'});
+}
+router.route('/:taskId').delete(async (req: Request, res: Response, next: NextFunction) => routeDeleteTask(req, res, next).catch(next));
 
 module.exports = router;

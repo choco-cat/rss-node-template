@@ -1,4 +1,6 @@
+const { NOT_FOUND } = require('http-status-codes');
 const Task = require('./task.model.ts');
+const ValidationError = require("../../middleware/validationError.ts");
 
 type ITask =  typeof Task;
 let Tasks: ITask[] = [];
@@ -8,7 +10,7 @@ let Tasks: ITask[] = [];
  * @param {string} boardId id of board from which to select task
  * @returns {Promise<Array.<Task>>} array of tasks objects
  */
-const getAll = async (boardId: string): Promise<ITask[]> => Tasks.filter((el) => el.boardId === boardId)
+const getAll = async (boardId: string): Promise<ITask[]> => Tasks.filter((el) => el.boardId === boardId);
 /**
  * Adds a new task object to array of tasks objects, returns new task
  *
@@ -27,7 +29,10 @@ const addTask = async (taskRow: ITask): Promise<ITask> => {
  * @returns {Promise<Task>} task object
  */
 const getTask = async (boardId: string, taskId: string): Promise<ITask> => {
-  const task = Tasks.find((el) =>  el.id === taskId && el.boardId === boardId);
+  const task = Tasks.find((el) =>  el.id === taskId && el.boardId === boardId) || null;
+  if (!task) {
+    throw new ValidationError(`Task with id = ${taskId} not found`, NOT_FOUND);
+  }
   return task;
 }
 /**
@@ -47,7 +52,10 @@ const deleteTasksFromUser = async (userId: string): Promise<ITask[]> => {
  * @returns {Promise<Task>} updated task
  */
 const updateTask = async (taskRow: ITask): Promise<ITask> => {
-  const task = Tasks.find((el) =>  el.id === taskRow.id && el.boardId === taskRow.boardId);
+  const task = Tasks.find((el) =>  el.id === taskRow.id && el.boardId === taskRow.boardId) || null;
+  if (!task) {
+    throw new ValidationError(`Task with id = ${taskRow.id} not found`, NOT_FOUND);
+  }
   if (task !== undefined) {
     task.title = taskRow.title;
     task.order = taskRow.order;
@@ -65,6 +73,9 @@ const updateTask = async (taskRow: ITask): Promise<ITask> => {
  */
 const deleteTask = async (taskId: string): Promise<boolean> => {
   const task = Tasks.find((el) =>  el.id === taskId);
+  if (!task) {
+    throw new ValidationError(`Task with id = ${taskId} not found`, NOT_FOUND);
+  }
   const index = Tasks.indexOf(task);
   if (index > -1) {
     Tasks.splice(index, 1);

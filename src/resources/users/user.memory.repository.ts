@@ -1,4 +1,6 @@
+const { NOT_FOUND } = require('http-status-codes');
 const User = require('./user.model.ts');
+const ValidationError = require("../../middleware/validationError.ts");
 
 type IUser =  typeof User;
 const Users: IUser[] = [];
@@ -26,7 +28,10 @@ const addUser = async (userRow: IUser): Promise<IUser> => {
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
 const getUser = async (userId: string): Promise<Partial<IUser>> => {
-  const user = Users.find((el) =>  el.id === userId);
+  const user = Users.find((el) =>  el.id === userId) || null;
+  if (!user) {
+    throw new ValidationError(`User with id = ${userId} not found`, NOT_FOUND);
+  }
   return User.toResponse(user);
 }
 /**
@@ -36,10 +41,15 @@ const getUser = async (userId: string): Promise<Partial<IUser>> => {
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
 const updateUser = async (userRow: IUser) => {
-  const user = Users.find((el) =>  el.id === userRow.id) || {};
+  const user = Users.find((el) =>  el.id === userRow.id) || null;
+  if (!user) {
+    throw new ValidationError(`User with id = ${userRow.id} not found`, NOT_FOUND);
+  }
+  if (user !== null && (typeof user === "object")) {
     user.name = userRow.name;
     user.login = userRow.login;
     user.password = userRow.password;
+  }
   return User.toResponse(user);
 }
 /**
@@ -49,7 +59,10 @@ const updateUser = async (userRow: IUser) => {
  * @returns {Promise<boolean>} Returns true if the user has been removed and false if not removed
  */
 const deleteUser = async (userId: string): Promise<boolean> => {
-  const user = Users.find((el) => el.id === userId);
+  const user = Users.find((el) => el.id === userId) || null;
+  if (!user) {
+    throw new ValidationError(`User with id = ${userId} not found`, NOT_FOUND);
+  }
   const index = Users.indexOf(user);
   if (index > -1) {
     Users.splice(index, 1);
@@ -58,3 +71,4 @@ const deleteUser = async (userId: string): Promise<boolean> => {
 }
 
 module.exports = { getAll, addUser, getUser, updateUser, deleteUser };
+export {};
