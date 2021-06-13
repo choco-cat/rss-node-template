@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Docker - [Download & Install Docker](https://docs.docker.com/engine/install/).
+Docker - [Download & Install Docker](https://docs.docker.com/engine/install/).
 
 ## Downloading
 

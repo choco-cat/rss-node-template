@@ -15,7 +15,7 @@ services:
     volumes:
       - ./logs:/usr/app/logs
       - ./src:/usr/app/src
-    restart: on-failure
+    restart: always
     depends_on:
       - postgres
   postgres:
@@ -38,7 +38,7 @@ services:
       POSTGRES_DB: DB_NAME
       POSTGRES_HOST: DB_HOST
       POSTGRES_PORT: DB_PORT
-    restart: on-failure
+    restart: always
 
 networks:
   user_network:
