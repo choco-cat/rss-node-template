@@ -15,6 +15,7 @@ services:
     volumes:
       - ./logs:/usr/app/logs
       - ./src:/usr/app/src
+      - /usr/app/node_modules
     restart: always
     depends_on:
       - postgres
