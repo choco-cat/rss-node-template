@@ -10,7 +10,7 @@
 git clone https://github.com/choco-cat/rss-node-template.git
 ```
 
-##Switch to branch task6
+## Switch to branch task6
 
 ```
 git checkout task6
