@@ -29,7 +29,7 @@ app.use('/boards', boardRouter);
 app.use('/exit', () => process.exit(2));
 app.use(errorHandler);
 process.on('uncaughtException', uncaughtExceptionHandler);
-// throw Error('Oops!');
+ // throw Error('Oops!');
 process.on('unhandledRejection', unhandledRejectionHandler);
 // Promise.reject(Error('Oops!'))
 module.exports = app;
