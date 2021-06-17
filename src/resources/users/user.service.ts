@@ -1,5 +1,5 @@
 const usersRepo = require('./user.memory.repository.ts');
-const User = require('./user.model.ts');
+const User = require('../../entities/User.ts');
 
 type IUser =  typeof User;
 /**

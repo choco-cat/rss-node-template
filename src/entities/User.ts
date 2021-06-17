@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, Column } from "typeorm";
 
 const { v4: uuid } = require('uuid');
 
@@ -14,18 +14,18 @@ interface IUser {
  *
  * @class
  */
-@Entity()
-export class User {
-  @PrimaryGeneratedColumn()
+@Entity({name: 'user'})
+export class User implements IUser{
+  @PrimaryColumn({type:"uuid"})
   id: string;
 
-  @Column()
+  @Column('varchar', {length: 25})
   name: string;
 
-  @Column()
+  @Column('varchar', {length: 25})
   login: string;
 
-  @Column()
+  @Column('varchar', {length: 25})
   password: string;
 
   constructor({

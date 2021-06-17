@@ -1,5 +1,4 @@
 {
-  "files": ["src/**/*.ts", "src/*.ts", "src/resources/users/user.model.ts"],
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",
@@ -25,6 +24,6 @@
     "node_modules/"
   ],
   "include": [
-    "../src/**/*.ts", "../src/*.ts"
+    "./src/**/*.ts", "./src/*.ts"
   ]
 }

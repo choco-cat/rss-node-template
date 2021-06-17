@@ -1,5 +1,7 @@
+import { getRepository } from "typeorm";
+
 const { NOT_FOUND } = require('http-status-codes');
-const User = require('./user.model.ts');
+const User = require('../../entities/User.ts');
 const ValidationError = require("../../middleware/validationError.ts");
 
 type IUser =  typeof User;
@@ -10,7 +12,11 @@ const Users: IUser[] = [];
  *
  * @returns {Promise<Array<User>>} array of users objects
  */
-const getAll = async (): Promise<IUser[]> => Users.map(User.toResponse);
+const getAll = async (): Promise<IUser[]> => {
+  const usersRepository = getRepository(User);
+  const allUsers = await usersRepository.find();
+  return allUsers;
+}
 /**
  * Adds a new user object to array of users objects, returns new user
  *
@@ -18,8 +24,10 @@ const getAll = async (): Promise<IUser[]> => Users.map(User.toResponse);
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
 const addUser = async (userRow: IUser): Promise<IUser> => {
-  Users.push(userRow);
-  return User.toResponse(userRow);
+  const usersRepository = getRepository(User);
+  const newStudent = await usersRepository.create(userRow);
+  const saveStudent = await usersRepository.save(newStudent);
+  return saveStudent;
 }
 /**
  * Returns the user by its id
@@ -27,13 +35,7 @@ const addUser = async (userRow: IUser): Promise<IUser> => {
  * @param {string} userId user id
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
-const getUser = async (userId: string): Promise<Partial<IUser>> => {
-  const user = Users.find((el) =>  el.id === userId) || null;
-  if (!user) {
-    throw new ValidationError(`User with id = ${userId} not found`, NOT_FOUND);
-  }
-  return User.toResponse(user);
-}
+const getUser = async (userId: string): Promise<Partial<IUser>> => User.findOne(userId)
 /**
  * Updates user data, returns updated user
  *

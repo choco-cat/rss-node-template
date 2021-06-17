@@ -2,9 +2,9 @@ import * as express from 'express';
 import {NextFunction, Request, Response} from 'express';
 
 const router = express.Router({mergeParams: true});
-const User = require('./user.model.ts');
+const User = require('../../entities/User.ts');
 const usersService = require('./user.service.ts');
-const tasksService = require("../tasks/task.service.ts");
+const tasksService = require('../tasks/task.service.ts');
 
 const routeGetUsers = async (_req: Request, res: Response, _next: NextFunction) => {
   const response = await usersService.getAll();
