@@ -16,7 +16,7 @@ const connectToDB = async () => {
         await createConnection(config);
        // connection = getConnection();
        // console.log('connection name', connection.name);
-        //console.error('Connection Error', err);
+        // console.error('Connection Error', err);
     }
 }
 

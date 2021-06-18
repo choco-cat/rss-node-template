@@ -1,5 +1,7 @@
 const { NOT_FOUND } = require('http-status-codes');
-const Board = require('./board.model.ts');
+
+const Board = require('../../entities/Board.ts');
+
 const ValidationError = require("../../middleware/validationError.ts");
 
 type IBoard =  typeof Board;

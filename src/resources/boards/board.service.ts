@@ -1,5 +1,5 @@
 const boardsRepo = require('./board.memory.repository.ts');
-const Board = require('./board.model.ts');
+const Board = require('../../entities/Board.ts');
 
 type IBoard =  typeof Board;
 /**

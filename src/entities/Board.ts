@@ -1,21 +1,34 @@
+import { Entity, PrimaryColumn, Column } from "typeorm";
+
 const { v4: uuid } = require('uuid');
+
+//const ColumnBoard = require("./Columnboard.ts");
+
+//type IColumn =  typeof ColumnBoard;
 
 interface IBoard {
   id: string;
   title: string;
-  columns: [];
+  columns: string[];
 }
 /**
  * Board class
  *
  * @class
  */
+@Entity({name: 'board'})
 class Board {
+  @PrimaryColumn('varchar')
   id: string;
 
+  @Column('varchar', { length: 35, nullable: true })
   title: string;
 
-  columns: [];
+ /* @OneToMany(() => Column, column => column.user)
+  columns: Column[]; */
+
+ // @OneToMany(() => ColumnBoard, (column:IColumn) => column.board)
+  columns: string[];
 
   constructor({
     id = uuid(),
