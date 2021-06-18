@@ -16,12 +16,7 @@ const config = {
       "synchronize": true,
       "autoreconnect": true,
       "logging": false,
-      "entities": ["src/entities/*.ts"],
-      "migrations": [
-    "src/migration/**/*.ts"
-  ],
-      "subscribers": [
-  ]
+      "entities": ["src/entities/*.ts"]
 } as ConnectionOptions;
 
 module.exports = config;

@@ -5,17 +5,19 @@ const config = require('../common/ormconfig.ts');
 const connectToDB = async () => {
     let connection;
     try {
-        createConnection(config);
         connection = getConnection();
         if (!connection.isConnected) {
             await connection.connect();
         } else {
-            createConnection(config);
+            await createConnection(config);
         }
+        console.log('Susseful connect!')
     } catch (err) {
-        console.error('Connection Error');
+        await createConnection(config);
+       // connection = getConnection();
+       // console.log('connection name', connection.name);
+        //console.error('Connection Error', err);
     }
-    console.log('Susseful connect!')
 }
 
 const TryDBConnect = async (cb: () => void) => {

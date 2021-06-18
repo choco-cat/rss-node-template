@@ -16,16 +16,16 @@ interface IUser {
  */
 @Entity({name: 'user'})
 export class User implements IUser{
-  @PrimaryColumn({type:"uuid"})
+  @PrimaryColumn('varchar')
   id: string;
 
-  @Column('varchar', {length: 25})
+  @Column('varchar', { length: 35, nullable: true })
   name: string;
 
-  @Column('varchar', {length: 25})
+  @Column('varchar', { length: 35, nullable: true })
   login: string;
 
-  @Column('varchar', {length: 25})
+  @Column('varchar', { length: 35, nullable: true})
   password: string;
 
   constructor({

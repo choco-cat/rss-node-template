@@ -5,7 +5,6 @@ const User = require('../../entities/User.ts');
 const ValidationError = require("../../middleware/validationError.ts");
 
 type IUser =  typeof User;
-const Users: IUser[] = [];
 
 /**
  * Returns all users
@@ -27,7 +26,7 @@ const addUser = async (userRow: IUser): Promise<IUser> => {
   const usersRepository = getRepository(User);
   const newStudent = await usersRepository.create(userRow);
   const saveStudent = await usersRepository.save(newStudent);
-  return saveStudent;
+  return User.toResponse(saveStudent);
 }
 /**
  * Returns the user by its id
@@ -35,7 +34,14 @@ const addUser = async (userRow: IUser): Promise<IUser> => {
  * @param {string} userId user id
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
-const getUser = async (userId: string): Promise<Partial<IUser>> => User.findOne(userId)
+const getUser = async (userId: string): Promise<Partial<IUser>> => {
+  const usersRepository = getRepository(User);
+  const findUser = await usersRepository.findOne(userId);
+  if(!findUser) {
+    throw new ValidationError(`User with id = ${userId} not found`, NOT_FOUND);
+  }
+  return User.toResponse(findUser);
+}
 /**
  * Updates user data, returns updated user
  *
@@ -43,16 +49,13 @@ const getUser = async (userId: string): Promise<Partial<IUser>> => User.findOne(
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
 const updateUser = async (userRow: IUser) => {
-  const user = Users.find((el) =>  el.id === userRow.id) || null;
-  if (!user) {
+  const usersRepository = getRepository(User);
+  await usersRepository.update(userRow.id, { name: userRow.name, login: userRow.login, password: userRow.password } );
+  const findUser = await usersRepository.findOne(userRow.id);
+  if(!findUser) {
     throw new ValidationError(`User with id = ${userRow.id} not found`, NOT_FOUND);
   }
-  if (user !== null && (typeof user === "object")) {
-    user.name = userRow.name;
-    user.login = userRow.login;
-    user.password = userRow.password;
-  }
-  return User.toResponse(user);
+  return User.toResponse(findUser);
 }
 /**
  * Deletes the user
@@ -61,15 +64,12 @@ const updateUser = async (userRow: IUser) => {
  * @returns {Promise<boolean>} Returns true if the user has been removed and false if not removed
  */
 const deleteUser = async (userId: string): Promise<boolean> => {
-  const user = Users.find((el) => el.id === userId) || null;
-  if (!user) {
+  const usersRepository = getRepository(User);
+  const deletionRes = await usersRepository.delete(userId);
+  if (!deletionRes.affected) {
     throw new ValidationError(`User with id = ${userId} not found`, NOT_FOUND);
   }
-  const index = Users.indexOf(user);
-  if (index > -1) {
-    Users.splice(index, 1);
-  }
-  return index !== -1 ;
+  return !!deletionRes.affected;
 }
 
 module.exports = { getAll, addUser, getUser, updateUser, deleteUser };
