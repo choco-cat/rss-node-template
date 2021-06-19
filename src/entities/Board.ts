@@ -28,8 +28,6 @@ class Board {
  /* @OneToMany(() => ColumnBoard, (column: IColumn) => column.board)
   columnboard: [];*/
 
-  // @ts-ignore
-//  @OneToMany(() => ColumnBoard, (col) => col.board) // note: we will create author property in the Photo class below
   columns: [];
 
   constructor({

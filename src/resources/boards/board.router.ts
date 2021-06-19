@@ -5,7 +5,7 @@ const router = express.Router();
 const Board = require("../../entities/Board.ts");
 const boardsService = require('./board.service.ts');
 const tasksService = require("../tasks/task.service.ts");
-const Task = require("../tasks/task.model.ts");
+const Task = require("../../entities/Task.ts");
 
 type ITask =  typeof Task;
 

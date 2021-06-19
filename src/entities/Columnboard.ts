@@ -43,10 +43,11 @@ interface IColumn {
   }
 
     static toResponse(columns: IColumn[]) {
-        return columns.map( (col: IColumn) => {
+        return columns.sort((col1: IColumn, col2: IColumn) => (col1.order > col2.order) ? 1 : -1)
+            .map( (col: IColumn) => {
             const { title, order } = col;
             return { title, order };
-        })
+        });
     }
  }
 

@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {NextFunction, Request, Response} from 'express';
 
-const Task = require('./task.model.ts');
+const Task = require('../../entities/Task.ts');
 const tasksService = require('./task.service.ts');
 
 const router = express.Router({mergeParams: true});
