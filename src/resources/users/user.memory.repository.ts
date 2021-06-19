@@ -24,9 +24,9 @@ const getAll = async (): Promise<IUser[]> => {
  */
 const addUser = async (userRow: IUser): Promise<IUser> => {
   const usersRepository = getRepository(User);
-  const newStudent = await usersRepository.create(userRow);
-  const saveStudent = await usersRepository.save(newStudent);
-  return User.toResponse(saveStudent);
+  const newUser = await usersRepository.create(userRow);
+  const saveUser = await usersRepository.save(newUser);
+  return User.toResponse(saveUser);
 }
 /**
  * Returns the user by its id

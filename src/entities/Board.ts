@@ -9,7 +9,7 @@ const { v4: uuid } = require('uuid');
 interface IBoard {
   id: string;
   title: string;
-  columns: string[];
+  columns: [];
 }
 /**
  * Board class
@@ -24,23 +24,24 @@ class Board {
   @Column('varchar', { length: 35, nullable: true })
   title: string;
 
- /* @OneToMany(() => Column, column => column.user)
-  columns: Column[]; */
 
- // @OneToMany(() => ColumnBoard, (column:IColumn) => column.board)
-  columns: string[];
+ /* @OneToMany(() => ColumnBoard, (column: IColumn) => column.board)
+  columnboard: [];*/
+
+  // @ts-ignore
+//  @OneToMany(() => ColumnBoard, (col) => col.board) // note: we will create author property in the Photo class below
+  columns: [];
 
   constructor({
     id = uuid(),
     title,
-    columns = []
+    columns
   } = {} as IBoard) {
     /** @type {string} */
     this.id = id;
     /** @type {string} */
     this.title = title;
-    /** @type {Array.<string>} */
-    this.columns = [...columns];
+    this.columns = columns;
   }
 }
 
