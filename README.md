@@ -1,28 +1,21 @@
-# Docker basics
-
-## Prerequisites
-
-Docker - [Download & Install Docker](https://docs.docker.com/engine/install/).
-
-## Downloading
-
+#PostgreSQL & Typeorm
+## Выполнялось без использования Docker. Необходимо:
+* запущенный postgresql сервер с БД, в которой не должно быть таблиц (таблицы создает запуск миграции)
+* для доступа к БД используется .env в корне проекта с необходимыми параметрами (создать). Пример содержимого файла:
 ```
-git clone https://github.com/choco-cat/rss-node-template.git
+NODE_ENV=development
+PORT=4000
+DB_PORT=5432
+DB_HOST=localhost
+DB_USER=postgres
+DB_NAME=gamedb
+AUTH_MODE=false
+DB_PASS=1234
+JWT_SECRET_KEY=secret-key
+MONGO_CONNECTION_STRING=your-mongo-db-connection-string
 ```
-
-## Switch to branch task6
-
-```
-git checkout task6
-```
-
-## Running application
-
-```
-docker-compose up 
-```
-
-After starting the app on port you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
-The database will be stored in ./data
+## Порядок проверки:
+* `npm install`
+* Для запуска миграции выполнить команду `npm run typeorm migration:run`
+* `npm start`
+* `npm test`

@@ -3,7 +3,6 @@ import { Entity, PrimaryColumn, Column } from "typeorm";
 const { v4: uuid } = require('uuid');
 
 //const ColumnBoard = require("./Columnboard.ts");
-
 //type IColumn =  typeof ColumnBoard;
 
 interface IBoard {
