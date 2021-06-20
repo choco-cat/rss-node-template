@@ -17,23 +17,22 @@ interface IBoard {
  * @class
  */
 @Entity({name: 'board'})
-class Board {
+export class Board {
   @PrimaryColumn('varchar')
   id: string;
 
   @Column('varchar', { length: 35, nullable: true })
   title: string;
 
-
- /* @OneToMany(() => ColumnBoard, (column: IColumn) => column.board)
-  columnboard: [];*/
-
-  columns: [];
+//  @OneToMany(() => ColumnBoard, (column: IColumn) => column.board, {eager: true, cascade: true})
+ // @JoinColumn( 'id' )
+  @Column('jsonb', { nullable: true })
+  public columns: [];
 
   constructor({
     id = uuid(),
     title,
-    columns
+                columns
   } = {} as IBoard) {
     /** @type {string} */
     this.id = id;

@@ -13,10 +13,17 @@ const config = {
       "username": DB_USER,
       "password": DB_PASS,
       "database": DB_NAME,
-      "synchronize": true,
+      "synchronize": false,
       "autoreconnect": true,
       "logging": false,
-      "entities": ["src/entities/*.ts"]
+      "entities": ["src/entities/*.ts"],
+      "migrations": [
+            "src/migration/**/*.{ts,js}"
+      ],
+      "cli": {
+            "entitiesDir": "src/entities/",
+            "migrationsDir": "src/migration"
+      }
 } as ConnectionOptions;
 
 module.exports = config;

@@ -1,6 +1,7 @@
-import { getConnection, createConnection } from "typeorm";
+import {getConnection, createConnection} from "typeorm";
 
 const config = require('../common/ormconfig.ts');
+//const dbShema = require('../migration/dbShema.ts');
 
 const connectToDB = async () => {
     let connection;
@@ -14,9 +15,18 @@ const connectToDB = async () => {
         console.log('Susseful connect!')
     } catch (err) {
         await createConnection(config);
+
+      /*  connection = getConnection();
+        const queryRunner: QueryRunner = connection.createQueryRunner();
+        console.log('dbShema',dbShema);
+        // eslint-disable-next-line new-cap
+        dbShema.up(queryRunner); */
+
+
+       // await dbShema.up();
        // connection = getConnection();
        // console.log('connection name', connection.name);
-        // console.error('Connection Error', err);
+       // console.error('Connection Error', err);
     }
 }
 
