@@ -25,7 +25,7 @@ export class User implements IUser{
   @Column('varchar', { length: 35, nullable: true })
   login: string;
 
-  @Column('varchar', { length: 35, nullable: true})
+  @Column('varchar', { length: 45, nullable: true})
   password: string;
 
   constructor({

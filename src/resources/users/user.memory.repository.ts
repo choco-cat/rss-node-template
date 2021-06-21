@@ -1,5 +1,6 @@
 import { getRepository } from "typeorm";
 
+const bcrypt = require("bcrypt");
 const { NOT_FOUND } = require('http-status-codes');
 const User = require('../../entities/User.ts');
 const ValidationError = require("../../middleware/validationError.ts");
@@ -24,7 +25,7 @@ const getAll = async (): Promise<IUser[]> => {
  */
 const addUser = async (userRow: IUser): Promise<IUser> => {
   const usersRepository = getRepository(User);
-  const newUser = await usersRepository.create(userRow);
+  const newUser = await usersRepository.create({ ...userRow, password: bcrypt.hashSync(userRow.password, 10)});
   const saveUser = await usersRepository.save(newUser);
   return User.toResponse(saveUser);
 }
