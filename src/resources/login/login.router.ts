@@ -1,18 +1,25 @@
 import * as express from 'express';
 import {NextFunction, Request, Response} from 'express';
-
-//const jwt = require("jsonwebtoken");
+import {getRepository} from "typeorm";
 
 const router = express.Router();
 const loginService = require('./login.service.ts');
+const User = require('../../entities/User.ts');
 
+type IUser =  typeof User;
 
-const routeCryptPassword = async (req: Request, res: Response, _next: NextFunction) => {
-  const response = await loginService.cryptPassword((req.body));
- // const token = jwt.sign({ id: user.id }, "lets_play_sum_games_man", { expiresIn: 60 * 60 * 24 });
- // console.log('req.body',req.body);
-  res.status(201).json(response);
+const routeGetToken = async (req: Request, res: Response, next: NextFunction) => {
+  const usersRepository = getRepository(User);
+  const user = await usersRepository.findOne({login: req.body.login}) as IUser;
+  loginService.getToken(user, req.body.password, (response: string, err: Error) => {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.status(201).json(response);
+  });
 }
-router.route('/').post(async (req: Request, res: Response, next: NextFunction) => routeCryptPassword(req, res, next).catch(next));
+router.route('/').post(async (req: Request, res: Response, next: NextFunction) => routeGetToken(req, res, next).catch(next));
 
 module.exports = router;
+export {};
