@@ -73,5 +73,11 @@ const deleteUser = async (userId: string): Promise<boolean> => {
   return !!deletionRes.affected;
 }
 
-module.exports = { getAll, addUser, getUser, updateUser, deleteUser };
+const loginUser = async (login: string): Promise<boolean> => {
+  const usersRepository = getRepository(User);
+  const findUser = await usersRepository.findOne({login});
+  return !!findUser;
+}
+
+module.exports = { getAll, addUser, getUser, updateUser, deleteUser, loginUser };
 export {};

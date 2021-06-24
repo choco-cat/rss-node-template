@@ -8,7 +8,7 @@ const User = require('../../entities/User.ts');
 
 type IUser =  typeof User;
 
-const routeGetToken = async (req: Request, res: Response, next: NextFunction) => {
+router.route('/').post(async (req: Request, res: Response, next: NextFunction) => {
   const usersRepository = getRepository(User);
   const user = await usersRepository.findOne({login: req.body.login}) as IUser;
   loginService.getToken(user, req.body.password, (response: string, err: Error) => {
@@ -16,10 +16,13 @@ const routeGetToken = async (req: Request, res: Response, next: NextFunction) =>
       next(err);
       return;
     }
-    res.status(201).json(response);
+    req.body.test = 'test';
+    req.body.token = response;
+    req.body.user = user;
+    next();
+    res.status(201).json({ 'token': response });
   });
-}
-router.route('/').post(async (req: Request, res: Response, next: NextFunction) => routeGetToken(req, res, next).catch(next));
+});
 
 module.exports = router;
 export {};
