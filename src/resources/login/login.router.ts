@@ -2,10 +2,11 @@ import * as express from 'express';
 import {NextFunction, Request, Response} from 'express';
 import {getRepository} from "typeorm";
 
-const router = express.Router();
+const { CREATED } = require('http-status-codes');
 const loginService = require('./login.service.ts');
 const User = require('../../entities/User.ts');
 
+const router = express.Router();
 type IUser =  typeof User;
 
 router.route('/').post(async (req: Request, res: Response, next: NextFunction) => {
@@ -16,11 +17,7 @@ router.route('/').post(async (req: Request, res: Response, next: NextFunction) =
       next(err);
       return;
     }
-    req.body.test = 'test';
-    req.body.token = response;
-    req.body.user = user;
-    next();
-    res.status(201).json({ 'token': response });
+    res.status(CREATED).json({ 'token': response });
   });
 });
 

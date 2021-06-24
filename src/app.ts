@@ -9,7 +9,7 @@ const boardRouter = require('./resources/boards/board.router.ts');
 const loginRouter = require('./resources/login/login.router.ts');
 const taskRouter = require('./resources/tasks/task.router.ts');
 const { errorHandler, uncaughtExceptionHandler, unhandledRejectionHandler } = require('./middleware/errorHandler.ts');
-const checkAuthorization = require('./middleware/checkAuthorization.ts');
+const checkAuthentification = require('./middleware/checkAuthentification.ts');
 
 const logger = require('./middleware/logger.ts');
 
@@ -20,7 +20,6 @@ app.use(logger);
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use('/', (req: Request, res: Response, next: NextFunction) => {
-  //req.headers.authorization = 'test';
   if (req.originalUrl === '/') {
     res.send('Service is running!');
     return;
@@ -29,7 +28,7 @@ app.use('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use('/login', loginRouter);
-app.use(checkAuthorization);
+app.use(checkAuthentification);
 app.use('/users', userRouter);
 app.use('/boards/:boardId/tasks', taskRouter);
 app.use('/boards', boardRouter);
