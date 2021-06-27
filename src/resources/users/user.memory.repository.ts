@@ -1,5 +1,6 @@
 import { getRepository } from "typeorm";
 
+const bcrypt = require("bcrypt");
 const { NOT_FOUND } = require('http-status-codes');
 const User = require('../../entities/User.ts');
 const ValidationError = require("../../middleware/validationError.ts");
@@ -24,7 +25,8 @@ const getAll = async (): Promise<IUser[]> => {
  */
 const addUser = async (userRow: IUser): Promise<IUser> => {
   const usersRepository = getRepository(User);
-  const newUser = await usersRepository.create(userRow);
+  console.log({ ...userRow, password: bcrypt.hashSync(userRow.password, 10)});
+  const newUser = await usersRepository.create({ ...userRow, password: bcrypt.hashSync(userRow.password, 10)});
   const saveUser = await usersRepository.save(newUser);
   return User.toResponse(saveUser);
 }
@@ -72,5 +74,11 @@ const deleteUser = async (userId: string): Promise<boolean> => {
   return !!deletionRes.affected;
 }
 
-module.exports = { getAll, addUser, getUser, updateUser, deleteUser };
+const loginUser = async (login: string): Promise<boolean> => {
+  const usersRepository = getRepository(User);
+  const findUser = await usersRepository.findOne({login});
+  return !!findUser;
+}
+
+module.exports = { getAll, addUser, getUser, updateUser, deleteUser, loginUser };
 export {};

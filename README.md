@@ -1,6 +1,6 @@
-#PostgreSQL & Typeorm
+#Authentication and JWT
 
 ## Порядок проверки:
+* `npm install`
 * `docker-compose up`
-* `npm run typeorm migration:run`
-* `npm test`
+* `npm run test:auth`

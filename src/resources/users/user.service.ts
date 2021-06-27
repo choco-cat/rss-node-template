@@ -38,5 +38,7 @@ const updateUser = async (userRow: IUser): Promise<Partial<IUser>> => usersRepo.
  */
 const deleteUser = async (userId: IUser): Promise<boolean> => usersRepo.deleteUser(userId);
 
-module.exports = { getAll, addUser, getUser, updateUser, deleteUser };
+const loginUser = async (login: string): Promise<boolean> => usersRepo.loginUser(login);
+
+module.exports = { getAll, addUser, getUser, updateUser, deleteUser, loginUser };
 export {};
