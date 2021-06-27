@@ -1,6 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn} from "typeorm";
 
-const { v4: uuid } = require('uuid');
 
 interface IUser {
   id: string;
@@ -29,7 +28,7 @@ export class User implements IUser{
   password: string;
 
   constructor({
-    id = uuid(),
+    id ,
     name = 'USER',
     login = 'user',
     password = 'P@55w0rd'

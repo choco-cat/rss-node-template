@@ -15,7 +15,7 @@ const config = {
   "database": DB_NAME,
   "synchronize": false,
   "autoreconnect": true,
-  "logging": true,
+  "logging": false,
   "entities": ["src/entities/*.ts"],
   migrationsRun: true,
   "migrations": [
