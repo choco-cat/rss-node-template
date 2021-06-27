@@ -1,25 +1,34 @@
+import {getRepository} from "typeorm";
+
 const { NOT_FOUND } = require('http-status-codes');
-const Board = require('./board.model.ts');
+const Board = require('../../entities/Board.ts');
 const ValidationError = require("../../middleware/validationError.ts");
 
 type IBoard =  typeof Board;
-const Boards: IBoard[] = [];
 
 /**
  * Returns all boards
  *
  * @returns {Promise<Array<Board>>} array of boards objects
  */
-const getAll = async (): Promise<IBoard[]> => Boards;
+
+const getAll = async (): Promise<IBoard[]> => {
+  const boardsRepository = getRepository(Board);
+  const allBoards = await boardsRepository.find();
+  return allBoards;
+}
 /**
  * Adds a new board object to array of boards objects, returns new board
  *
  * @param {Board} boardRow board to add
  * @returns {Promise<Board>} board object
  */
+
 const addBoard = async (boardRow: IBoard): Promise<IBoard> => {
-  Boards.push(boardRow);
-  return boardRow;
+  const boardsRepository = getRepository(Board);
+  const newBoard = await boardsRepository.create(boardRow);
+  const saveBoard = await boardsRepository.save(newBoard);
+  return saveBoard;
 }
 /**
  * Returns the board by its id
@@ -28,12 +37,14 @@ const addBoard = async (boardRow: IBoard): Promise<IBoard> => {
  * @returns {Promise<Board>} board object
  */
 const getBoard = async (boardId: string): Promise<IBoard> => {
-  const board = Boards.find((el) =>  el.id === boardId) || null;
-  if (!board) {
+  const boardsRepository = getRepository(Board);
+  const findBoard = await boardsRepository.findOne(boardId) as IBoard;
+  if(!findBoard) {
     throw new ValidationError(`Board with id = ${boardId} not found`, NOT_FOUND);
   }
-  return board;
+  return findBoard ;
 }
+
 /**
  * Updates board data, returns updated board
  *
@@ -41,15 +52,12 @@ const getBoard = async (boardId: string): Promise<IBoard> => {
  * @returns {Promise<Board>} updated board
  */
 const updateBoard = async (boardRow: IBoard): Promise<IBoard> => {
-  const board = await Boards.find((el) =>  el.id === boardRow.id) || null;
-  if (!board) {
+  const boardsRepository = getRepository(Board);
+  const findBoard = await boardsRepository.findOne(boardRow.id) as IBoard;
+  if(!findBoard) {
     throw new ValidationError(`Board with id = ${boardRow.id} not found`, NOT_FOUND);
   }
-  if (board !== null && (typeof board === "object")) {
-    board.title = boardRow.title;
-    board.columns = [...boardRow.columns]
-  }
-  return board;
+  return boardsRepository.save({...findBoard, ...boardRow});
 }
 /**
  * Deletes the board
@@ -57,14 +65,22 @@ const updateBoard = async (boardRow: IBoard): Promise<IBoard> => {
  * @param {string} boardId board id
  * @returns {Promise<boolean>} returns true if the item has been removed and false if not removed
  */
+
 const deleteBoard = async (boardId: string): Promise<boolean> => {
-  const index = Boards.findIndex((el) => el.id === boardId);
-  if (index === -1) {
-    throw new ValidationError(`Board with id = ${boardId} not found`, NOT_FOUND);
+  const boardsRepository = getRepository(Board);
+  const findBoard = await boardsRepository.findOne({id: boardId});
+  if (findBoard === undefined) {
+    throw new ValidationError(`Board not found`, NOT_FOUND);
   }
-  Boards.splice(index, 1);
-  return index !== -1 ;
-}
+
+  const deletionRes = await boardsRepository.delete(boardId);
+
+  if (!deletionRes.affected) {
+    throw new ValidationError(`Board with id = ${boardId} not deleted`, NOT_FOUND);
+  }
+
+  return !!deletionRes.affected;
+};
 
 module.exports = { getAll, addBoard, getBoard, updateBoard, deleteBoard };
 export {};

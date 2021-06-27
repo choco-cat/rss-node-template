@@ -1,3 +1,5 @@
+import { Entity, PrimaryColumn, Column } from "typeorm";
+
 const { v4: uuid } = require('uuid');
 
 interface IUser {
@@ -6,18 +8,24 @@ interface IUser {
   login: string;
   password: string;
 }
+
 /**
  * User class
  *
  * @class
  */
-class User {
+@Entity({name: 'user'})
+export class User implements IUser{
+  @PrimaryColumn('varchar')
   id: string;
 
+  @Column('varchar', { length: 35, nullable: true })
   name: string;
 
+  @Column('varchar', { length: 35, nullable: true })
   login: string;
 
+  @Column('varchar', { length: 35, nullable: true})
   password: string;
 
   constructor({

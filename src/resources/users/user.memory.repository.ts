@@ -1,16 +1,21 @@
+import { getRepository } from "typeorm";
+
 const { NOT_FOUND } = require('http-status-codes');
-const User = require('./user.model.ts');
+const User = require('../../entities/User.ts');
 const ValidationError = require("../../middleware/validationError.ts");
 
 type IUser =  typeof User;
-const Users: IUser[] = [];
 
 /**
  * Returns all users
  *
  * @returns {Promise<Array<User>>} array of users objects
  */
-const getAll = async (): Promise<IUser[]> => Users.map(User.toResponse);
+const getAll = async (): Promise<IUser[]> => {
+  const usersRepository = getRepository(User);
+  const allUsers = await usersRepository.find();
+  return allUsers;
+}
 /**
  * Adds a new user object to array of users objects, returns new user
  *
@@ -18,8 +23,10 @@ const getAll = async (): Promise<IUser[]> => Users.map(User.toResponse);
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
 const addUser = async (userRow: IUser): Promise<IUser> => {
-  Users.push(userRow);
-  return User.toResponse(userRow);
+  const usersRepository = getRepository(User);
+  const newUser = await usersRepository.create(userRow);
+  const saveUser = await usersRepository.save(newUser);
+  return User.toResponse(saveUser);
 }
 /**
  * Returns the user by its id
@@ -28,11 +35,12 @@ const addUser = async (userRow: IUser): Promise<IUser> => {
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
 const getUser = async (userId: string): Promise<Partial<IUser>> => {
-  const user = Users.find((el) =>  el.id === userId) || null;
-  if (!user) {
+  const usersRepository = getRepository(User);
+  const findUser = await usersRepository.findOne(userId);
+  if(!findUser) {
     throw new ValidationError(`User with id = ${userId} not found`, NOT_FOUND);
   }
-  return User.toResponse(user);
+  return User.toResponse(findUser);
 }
 /**
  * Updates user data, returns updated user
@@ -41,16 +49,13 @@ const getUser = async (userId: string): Promise<Partial<IUser>> => {
  * @returns {Promise<{name: string, id: string, login: string}>} New user data without password
  */
 const updateUser = async (userRow: IUser) => {
-  const user = Users.find((el) =>  el.id === userRow.id) || null;
-  if (!user) {
+  const usersRepository = getRepository(User);
+  await usersRepository.update(userRow.id, { name: userRow.name, login: userRow.login, password: userRow.password } );
+  const findUser = await usersRepository.findOne(userRow.id);
+  if(!findUser) {
     throw new ValidationError(`User with id = ${userRow.id} not found`, NOT_FOUND);
   }
-  if (user !== null && (typeof user === "object")) {
-    user.name = userRow.name;
-    user.login = userRow.login;
-    user.password = userRow.password;
-  }
-  return User.toResponse(user);
+  return User.toResponse(findUser);
 }
 /**
  * Deletes the user
@@ -59,15 +64,12 @@ const updateUser = async (userRow: IUser) => {
  * @returns {Promise<boolean>} Returns true if the user has been removed and false if not removed
  */
 const deleteUser = async (userId: string): Promise<boolean> => {
-  const user = Users.find((el) => el.id === userId) || null;
-  if (!user) {
+  const usersRepository = getRepository(User);
+  const deletionRes = await usersRepository.delete(userId);
+  if (!deletionRes.affected) {
     throw new ValidationError(`User with id = ${userId} not found`, NOT_FOUND);
   }
-  const index = Users.indexOf(user);
-  if (index > -1) {
-    Users.splice(index, 1);
-  }
-  return index !== -1 ;
+  return !!deletionRes.affected;
 }
 
 module.exports = { getAll, addUser, getUser, updateUser, deleteUser };

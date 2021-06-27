@@ -1,5 +1,5 @@
 const tasksRepo = require('./task.memory.repository.ts');
-const Task = require('./task.model.ts');
+const Task = require('../../entities/Task.ts');
 
 type ITask =  typeof Task;
 
@@ -45,7 +45,7 @@ const deleteTask = async (taskId: string): Promise<boolean> => tasksRepo.deleteT
  * @param {string} userId user id
  * @returns {Promise<Array<Task>>} Returns an updated array of tasks objects
  */
-const deleteTasksFromUser = async (userId: string): Promise<ITask[]> => tasksRepo.deleteTasksFromUser(userId);
+const deleteTasksFromUser = async (userId: string): Promise<void> => tasksRepo.deleteTasksFromUser(userId);
 
 module.exports = { getAllTasks, addTask, getTask, updateTask, deleteTask, deleteTasksFromUser };
 export {};

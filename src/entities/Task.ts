@@ -1,3 +1,5 @@
+import {Column, Entity, PrimaryColumn} from "typeorm";
+
 const { v4: uuid } = require('uuid');
 
 interface ITask {
@@ -14,19 +16,27 @@ interface ITask {
  *
  * @class
  */
+@Entity({name: 'task'})
 class Task {
+  @Column('varchar', { length: 45, nullable: true })
   boardId: string;
 
+  @PrimaryColumn('varchar')
   id: string;
 
+  @Column('varchar', { length: 45, nullable: true })
   title: string;
 
+  @Column( 'integer', { nullable: true })
   order: number;
 
+  @Column('varchar', { length: 45, nullable: true })
   description: string;
 
+  @Column('varchar', { length: 45, nullable: true })
   userId: string;
 
+  @Column('varchar', { length: 45, nullable: true })
   columnId: string;
 
   constructor({
