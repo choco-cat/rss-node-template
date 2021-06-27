@@ -1,6 +1,4 @@
-import {Column, Entity, PrimaryColumn} from "typeorm";
-
-const { v4: uuid } = require('uuid');
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 interface ITask {
   boardId: string;
@@ -21,7 +19,7 @@ class Task {
   @Column('varchar', { length: 45, nullable: true })
   boardId: string;
 
-  @PrimaryColumn('varchar')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('varchar', { length: 45, nullable: true })
@@ -41,7 +39,7 @@ class Task {
 
   constructor({
     boardId,
-    id = uuid(),
+    id ,
     title,
     order,
     description,

@@ -25,6 +25,7 @@ const getAll = async (): Promise<IUser[]> => {
  */
 const addUser = async (userRow: IUser): Promise<IUser> => {
   const usersRepository = getRepository(User);
+  console.log({ ...userRow, password: bcrypt.hashSync(userRow.password, 10)});
   const newUser = await usersRepository.create({ ...userRow, password: bcrypt.hashSync(userRow.password, 10)});
   const saveUser = await usersRepository.save(newUser);
   return User.toResponse(saveUser);

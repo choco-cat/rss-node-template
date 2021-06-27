@@ -11,7 +11,7 @@ const connectToDB = async () => {
     } else {
       await createConnection(config);
     }
-    console.log('Susseful connect!')
+    console.log('Successful connect!')
   } catch (err) {
     await createConnection(config);
   }

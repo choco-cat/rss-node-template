@@ -8,7 +8,7 @@ const checkAuthentification = (req: Request, res: Response, next: NextFunction) 
   const {JWT_SECRET_KEY} = process.env;
   const sessionToken = `${req.headers.authorization}`.split(' ')[1];
   if (!sessionToken) {
-    res.status(UNAUTHORIZED).send({auth: false, message: "Access token is missing or invalidNo token provided"});
+    res.status(UNAUTHORIZED).send({auth: false, message: "Access token is missing or invalid"});
   } else {
     jwt.verify(sessionToken, JWT_SECRET_KEY, async (_err: Error, decoded: {login: string, id: string}) => {
       if (decoded) {

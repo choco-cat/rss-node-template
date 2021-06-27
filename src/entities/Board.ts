@@ -1,9 +1,4 @@
-import { Entity, PrimaryColumn, Column } from "typeorm";
-
-const { v4: uuid } = require('uuid');
-
-// const ColumnBoard = require("./Columnboard.ts");
-// type IColumn =  typeof ColumnBoard;
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 interface IBoard {
   id: string;
@@ -17,19 +12,17 @@ interface IBoard {
  */
 @Entity({name: 'board'})
 export class Board {
-  @PrimaryColumn('varchar')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('varchar', { length: 35, nullable: true })
   title: string;
 
-  //  @OneToMany(() => ColumnBoard, (column: IColumn) => column.board, {eager: true, cascade: true})
-  // @JoinColumn( 'id' )
   @Column('jsonb', { nullable: true })
   public columns: [];
 
   constructor({
-    id = uuid(),
+    id,
     title,
     columns
   } = {} as IBoard) {
