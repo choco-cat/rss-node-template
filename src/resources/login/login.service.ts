@@ -6,7 +6,7 @@ const User = require('../../entities/User.ts');
 
 type IUser =  typeof User;
 
-const EXPIRE_TOKEN = 60 * 60 * 24
+const EXPIRE_TOKEN = 60 * 60 * 24;
 // eslint-disable-next-line consistent-return
 const getToken = (user: IUser, password: string, callback: (response: string, err: Error | null) => void) => {
   const { JWT_SECRET_KEY } = process.env;
